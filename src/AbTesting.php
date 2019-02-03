@@ -10,8 +10,10 @@ class AbTesting
 {
     protected $experiments;
 
+    const SESSION_KEY_EXPERIMENTS = 'ab_testing_experiment';
+    const SESSION_KEY_GOALS = 'ab_testing_goals';
+
     public function __construct() {
-        // dump('construct');
         $this->experiments = new Collection;
     }
 
@@ -19,8 +21,16 @@ class AbTesting
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
 
-        if ($this->experiments->count() === count($configExperiments)) {
-            return;
+        // if ($this->experiments->count() === count($configExperiments)) {
+        //     return;
+        // }
+
+        if (count($configExperiments) !== count(array_unique($configExperiments))) {
+            throw new \Exception('The experiment names should be unique');
+        }
+
+        if (count($configGoals) !== count(array_unique($configGoals))) {
+            throw new \Exception('The goal names should be unique');
         }
 
         foreach ($configExperiments as $configExperiment) {
@@ -42,22 +52,22 @@ class AbTesting
 
     public function pageview() {
 
-        if (! session('ab_testing_experiment')) {
+        if (! session(self::SESSION_KEY_EXPERIMENTS)) {
             $this->start();
-            $this->setNewExperiment();
+            $this->setNextExperiment();
         }
     }
 
-    protected function setNewExperiment() {
-        $next = $this->nextExperiment();
+    protected function setNextExperiment() {
+        $next = $this->getNextExperiment();
         $next->incrementVisitor();
 
         session([
-            'ab_testing_experiment' => $next,
+            self::SESSION_KEY_EXPERIMENTS => $next,
         ]);
     }
 
-    protected function nextExperiment() {
+    protected function getNextExperiment() {
         $sorted = $this->experiments->sortBy('visitors');
         return $sorted->first();
     }
@@ -65,34 +75,32 @@ class AbTesting
     public function isExperiment($name) {
         $this->pageview();
 
-        return session('ab_testing_experiment')->name === $name;
+        return session(self::SESSION_KEY_EXPERIMENTS)->name === $name;
     }
 
     public function completeGoal($goal) {
 
-        $goal = session('ab_testing_experiment')->goals->where('name', $goal)->first();
+        $goal = session(self::SESSION_KEY_EXPERIMENTS)->goals->where('name', $goal)->first();
 
         if (!$goal) {
             return false;
         }
 
-        // dump(in_array($goal->id, session('ab_testing_goals')));
-
-        if (in_array($goal->id, array_wrap(session('ab_testing_goals')))) {
+        if (in_array($goal->id, array_wrap(session(self::SESSION_KEY_GOALS)))) {
             return false;
         }
 
-        $newGoals = session('ab_testing_goals');
+        $newGoals = session(self::SESSION_KEY_GOALS);
         $newGoals[] = $goal->id;
 
         session([
-            'ab_testing_goals' => $newGoals,
+            self::SESSION_KEY_GOALS => $newGoals,
         ]);
 
         return $goal->incrementHit();
     }
 
     public function getExperiment() {
-        return session('ab_testing_experiment')->name;
+        return session(self::SESSION_KEY_EXPERIMENTS)->name;
     }
 }
