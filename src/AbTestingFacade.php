@@ -1,13 +1,13 @@
 <?php
 
-namespace Ben182\LaravelAb;
+namespace Ben182\AbTesting;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Ben182\LaravelAb\Skeleton\SkeletonClass
+ * @see \Ben182\AbTesting\Skeleton\SkeletonClass
  */
-class LaravelAbFacade extends Facade
+class AbTestingFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class LaravelAbFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'laravel-ab';
+        return 'ab-testing';
     }
 }

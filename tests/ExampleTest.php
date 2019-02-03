@@ -1,6 +1,6 @@
 <?php
 
-namespace Ben182\LaravelAb\Tests;
+namespace Ben182\AbTesting\Tests;
 
 use PHPUnit\Framework\TestCase;
 

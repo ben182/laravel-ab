@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Ben182\\LaravelAb\\": "src"
+            "Ben182\\AbTesting\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ben182\\LaravelAb\\Tests\\": "tests"
+            "Ben182\\AbTesting\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -44,10 +44,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Ben182\\LaravelAb\\LaravelAbServiceProvider"
+                "Ben182\\AbTesting\\AbTestingServiceProvider"
             ],
             "aliases": {
-                "LaravelAb": "Ben182\\LaravelAb\\LaravelAbFacade"
+                "AbTesting": "Ben182\\AbTesting\\AbTestingFacade"
             }
         }
     }

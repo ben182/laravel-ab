@@ -1,10 +1,12 @@
 <?php
 
-namespace Ben182\LaravelAb;
+namespace Ben182\AbTesting;
 
 use Illuminate\Support\ServiceProvider;
+use Ben182\AbTesting\Commands\ReportCommand;
+use Ben182\AbTesting\Commands\FlushCommand;
 
-class LaravelAbServiceProvider extends ServiceProvider
+class AbTestingServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -16,12 +18,12 @@ class LaravelAbServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-ab');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-ab');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-ab.php'),
+                __DIR__.'/../config/config.php' => config_path('ab-testing.php'),
             ], 'config');
 
             // Publishing the views.
@@ -40,7 +42,10 @@ class LaravelAbServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                ReportCommand::class,
+                FlushCommand::class,
+            ]);
         }
     }
 
@@ -50,11 +55,11 @@ class LaravelAbServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-ab');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'ab-testing');
 
         // Register the main class to use with the facade
-        $this->app->singleton('laravel-ab', function () {
-            return new LaravelAb;
+        $this->app->singleton('ab-testing', function () {
+            return new AbTesting;
         });
     }
 }
