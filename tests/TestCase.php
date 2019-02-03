@@ -22,6 +22,8 @@ class TestCase extends \Orchestra\Testbench\TestCase {
         // $this->withFactories(__DIR__.'/Factories');
 
         $this->artisan('migrate');
+
+        session()->flush();
     }
 
     protected function getEnvironmentSetUp($app)

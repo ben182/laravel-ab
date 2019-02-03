@@ -6,9 +6,9 @@ use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 
-class ExampleTest extends TestCase
+class StartTest extends TestCase
 {
-    public function test_that_start_function_is_working()
+    public function test_that_start_function_works()
     {
         app(AbTesting::class)->pageview();
 
@@ -29,6 +29,19 @@ class ExampleTest extends TestCase
     public function test_exception_if_duplicate_experiment_names() {
         config([
             'ab-testing.experiments' => [
+                'test',
+                'test',
+            ]
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        app(AbTesting::class)->pageview();
+    }
+
+    public function test_exception_if_duplicate_goal_names() {
+        config([
+            'ab-testing.goals' => [
                 'test',
                 'test',
             ]
