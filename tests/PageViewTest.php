@@ -38,7 +38,7 @@ class PageViewTest extends TestCase
         $this->assertTrue(app(AbTesting::class)->isExperiment('firstExperiment'));
         $this->assertFalse(app(AbTesting::class)->isExperiment('secondExperiment'));
 
-        $this->assertEquals('firstExperiment', app(AbTesting::class)->getExperiment());
+        $this->assertEquals('firstExperiment', app(AbTesting::class)->getExperiment()->name);
     }
 
     public function test_that_two_pageviews_do_not_count_as_two_visitors() {

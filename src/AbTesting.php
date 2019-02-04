@@ -4,6 +4,7 @@ namespace Ben182\AbTesting;
 
 use Ben182\AbTesting\Models\Experiment;
 use Illuminate\Support\Collection;
+use Ben182\AbTesting\Models\Goal;
 
 
 class AbTesting
@@ -20,10 +21,6 @@ class AbTesting
     protected function start() {
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
-
-        // if ($this->experiments->count() === count($configExperiments)) {
-        //     return;
-        // }
 
         if (count($configExperiments) !== count(array_unique($configExperiments))) {
             throw new \Exception('The experiment names should be unique');
@@ -48,6 +45,10 @@ class AbTesting
                 ]);
             }
         }
+
+        session([
+            self::SESSION_KEY_GOALS => new Collection,
+        ]);
     }
 
     public function pageview() {
@@ -75,32 +76,42 @@ class AbTesting
     public function isExperiment($name) {
         $this->pageview();
 
-        return session(self::SESSION_KEY_EXPERIMENTS)->name === $name;
+        return $this->getExperiment()->name === $name;
     }
 
     public function completeGoal($goal) {
 
-        $goal = session(self::SESSION_KEY_EXPERIMENTS)->goals->where('name', $goal)->first();
+        if (!$this->getExperiment()) {
+            return false;
+        }
+
+        $goal = $this->getExperiment()->goals->where('name', $goal)->first();
 
         if (!$goal) {
             return false;
         }
 
-        if (in_array($goal->id, array_wrap(session(self::SESSION_KEY_GOALS)))) {
+        if (session(self::SESSION_KEY_GOALS)->contains($goal->id)) {
             return false;
         }
 
-        $newGoals = session(self::SESSION_KEY_GOALS);
-        $newGoals[] = $goal->id;
+        session(self::SESSION_KEY_GOALS)->push($goal->id);
 
-        session([
-            self::SESSION_KEY_GOALS => $newGoals,
-        ]);
-
-        return $goal->incrementHit();
+        return tap($goal)->incrementHit();
     }
 
     public function getExperiment() {
-        return session(self::SESSION_KEY_EXPERIMENTS)->name;
+        return session(self::SESSION_KEY_EXPERIMENTS);
+    }
+
+    public function getCompletedGoals() {
+
+        if (!session(self::SESSION_KEY_GOALS)) {
+            return false;
+        }
+
+        return session(self::SESSION_KEY_GOALS)->map(function($goalId) {
+            return Goal::find($goalId);
+        });
     }
 }

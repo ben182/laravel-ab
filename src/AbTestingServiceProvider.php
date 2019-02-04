@@ -5,6 +5,7 @@ namespace Ben182\AbTesting;
 use Illuminate\Support\ServiceProvider;
 use Ben182\AbTesting\Commands\ReportCommand;
 use Ben182\AbTesting\Commands\FlushCommand;
+use Illuminate\Http\Request;
 
 class AbTestingServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,10 @@ class AbTestingServiceProvider extends ServiceProvider
                 FlushCommand::class,
             ]);
         }
+
+        Request::macro('abTest', function () {
+            return app(AbTesting::class)->getExperiment();
+        });
     }
 
     /**
