@@ -25,8 +25,8 @@ class CommandTest extends TestCase
         $this->assertCount(0, Goal::all());
     }
 
-    public function test_report_command() {
-
+    public function test_report_command()
+    {
         $this->artisan('ab:report')->assertExitCode(0);
 
         $reportCommand = new ReportCommand;

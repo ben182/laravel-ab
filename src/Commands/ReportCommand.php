@@ -44,7 +44,8 @@ class ReportCommand extends Command
         $this->table($header, $body);
     }
 
-    public function prepareHeader() {
+    public function prepareHeader()
+    {
         $header = [
             'Experiment',
             'Visitors',
@@ -55,7 +56,8 @@ class ReportCommand extends Command
         }, config('ab-testing.goals')));
     }
 
-    public function prepareBody() {
+    public function prepareBody()
+    {
         return Experiment::all()->map(function ($item) {
             $return = [$item->name, $item->visitors];
 

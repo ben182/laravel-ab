@@ -2,8 +2,8 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\AbTestingServiceProvider;
 use Ben182\AbTesting\AbTestingFacade;
+use Ben182\AbTesting\AbTestingServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -42,7 +42,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return [AbTestingServiceProvider::class];
     }
 
-    protected function newVisitor() {
+    protected function newVisitor()
+    {
         session()->flush();
         AbTestingFacade::pageview();
     }
