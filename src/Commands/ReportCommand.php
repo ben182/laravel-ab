@@ -59,8 +59,6 @@ class ReportCommand extends Command
             return array_merge($return, $goalConversations->toArray());
         });
 
-        // dd($experiments);
-
         $this->table($header, $experiments);
     }
 }
