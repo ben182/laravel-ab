@@ -3,10 +3,10 @@
 namespace Ben182\AbTesting;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Ben182\AbTesting\Commands\FlushCommand;
 use Ben182\AbTesting\Commands\ReportCommand;
-use Illuminate\Support\Facades\Blade;
 
 class AbTestingServiceProvider extends ServiceProvider
 {
