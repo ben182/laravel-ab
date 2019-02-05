@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Ben182\AbTesting\Commands\FlushCommand;
 use Ben182\AbTesting\Commands\ReportCommand;
+use Illuminate\Support\Facades\Blade;
 
 class AbTestingServiceProvider extends ServiceProvider
 {
@@ -49,8 +50,12 @@ class AbTestingServiceProvider extends ServiceProvider
             ]);
         }
 
-        Request::macro('abTest', function () {
+        Request::macro('abExperiment', function () {
             return app(AbTesting::class)->getExperiment();
+        });
+
+        Blade::if('abExperiment', function ($experiment) {
+            return app(AbTesting::class)->isExperiment($experiment);
         });
     }
 

@@ -1,9 +1,8 @@
-# Very short description of the package
+# Laravel A/B Testing
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ben182/laravel-ab.svg?style=flat-square)](https://packagist.org/packages/ben182/laravel-ab)
 [![Build Status](https://img.shields.io/travis/ben182/laravel-ab/master.svg?style=flat-square)](https://travis-ci.org/ben182/laravel-ab)
 [![Quality Score](https://img.shields.io/scrutinizer/g/ben182/laravel-ab.svg?style=flat-square)](https://scrutinizer-ci.com/g/ben182/laravel-ab)
-[![Total Downloads](https://img.shields.io/packagist/dt/ben182/laravel-ab.svg?style=flat-square)](https://packagist.org/packages/ben182/laravel-ab)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
@@ -42,7 +41,7 @@ If you discover any security related issues, please email moin@benjaminbortels.d
 
 ## Credits
 
-- [Ben](https://github.com/ben182)
+- [Benjamin Bortels](https://github.com/ben182)
 - [All Contributors](../../contributors)
 
 ## License

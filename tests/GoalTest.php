@@ -16,7 +16,9 @@ class GoalTest extends TestCase
 
         $this->assertEquals(0, $goal->hit);
 
-        AbTestingFacade::completeGoal('firstGoal');
+        $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
+
+        $this->assertEquals($goal, $returnedGoal);
 
         $this->assertEquals(1, $goal->hit);
 
@@ -32,7 +34,9 @@ class GoalTest extends TestCase
 
         $this->assertEquals(1, $goal->hit);
 
-        AbTestingFacade::completeGoal('firstGoal');
+        $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
+
+        $this->assertFalse($returnedGoal);
 
         $this->assertEquals(1, $goal->hit);
 
