@@ -17,11 +17,13 @@ class Goal extends Model
         'hit' => 'integer',
     ];
 
-    public function experiment() {
+    public function experiment()
+    {
         return $this->belongsTo(Experiment::class);
     }
 
-    public function incrementHit() {
+    public function incrementHit()
+    {
         $this->increment('hit');
     }
 }

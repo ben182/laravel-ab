@@ -17,11 +17,13 @@ class Experiment extends Model
         'visitors' => 'integer',
     ];
 
-    public function goals() {
+    public function goals()
+    {
         return $this->hasMany(Goal::class);
     }
 
-    public function incrementVisitor() {
+    public function incrementVisitor()
+    {
         $this->increment('visitors');
     }
 }

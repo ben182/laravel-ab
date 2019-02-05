@@ -2,10 +2,10 @@
 
 namespace Ben182\AbTesting;
 
-use Illuminate\Support\ServiceProvider;
-use Ben182\AbTesting\Commands\ReportCommand;
-use Ben182\AbTesting\Commands\FlushCommand;
 use Illuminate\Http\Request;
+use Illuminate\Support\ServiceProvider;
+use Ben182\AbTesting\Commands\FlushCommand;
+use Ben182\AbTesting\Commands\ReportCommand;
 
 class AbTestingServiceProvider extends ServiceProvider
 {

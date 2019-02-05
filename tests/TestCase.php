@@ -4,9 +4,8 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTestingServiceProvider;
 
-
-class TestCase extends \Orchestra\Testbench\TestCase {
-
+class TestCase extends \Orchestra\Testbench\TestCase
+{
     protected $experiments = [
         'firstExperiment',
         'secondExperiment',

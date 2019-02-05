@@ -5,8 +5,8 @@ namespace Ben182\AbTesting\Commands;
 use Illuminate\Console\Command;
 use Ben182\AbTesting\Models\Experiment;
 
-class ReportCommand extends Command {
-
+class ReportCommand extends Command
+{
     /**
      * The name and signature of the console command.
      *
@@ -43,18 +43,17 @@ class ReportCommand extends Command {
             'Visitors',
         ];
 
-        $header = array_merge($header, array_map(function($item) {
-            return 'Goal ' . $item;
+        $header = array_merge($header, array_map(function ($item) {
+            return 'Goal '.$item;
         }, config('ab-testing.goals')));
 
-        $experiments = Experiment::all()->map(function($item) {
-
+        $experiments = Experiment::all()->map(function ($item) {
             $return = [$item->name, $item->visitors];
 
-            $goalConversations = $item->goals->pluck('hit')->map(function($hit) use($item) {
-            $item->visitors = $item->visitors ?: 1; // prevent division by zero exception
+            $goalConversations = $item->goals->pluck('hit')->map(function ($hit) use ($item) {
+                $item->visitors = $item->visitors ?: 1; // prevent division by zero exception
 
-                return $hit . ' (' . ($hit / $item->visitors * 100) . '%)';
+                return $hit.' ('.($hit / $item->visitors * 100).'%)';
             });
 
             return array_merge($return, $goalConversations->toArray());
