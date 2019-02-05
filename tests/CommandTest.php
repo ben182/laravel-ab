@@ -2,9 +2,9 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\AbTestingFacade;
 
 class CommandTest extends TestCase
 {
@@ -13,7 +13,7 @@ class CommandTest extends TestCase
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());
 
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
 
         $this->assertCount(2, Experiment::all());
         $this->assertCount(4, Goal::all());

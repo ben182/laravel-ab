@@ -3,12 +3,13 @@
 namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
+use Ben182\AbTesting\AbTestingFacade;
 
 class PageViewTest extends TestCase
 {
     public function test_that_pageview_works()
     {
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
 
@@ -24,7 +25,7 @@ class PageViewTest extends TestCase
 
         $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENTS));
 
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
 
@@ -34,18 +35,18 @@ class PageViewTest extends TestCase
 
     public function test_is_experiment()
     {
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
 
-        $this->assertTrue(app(AbTesting::class)->isExperiment('firstExperiment'));
-        $this->assertFalse(app(AbTesting::class)->isExperiment('secondExperiment'));
+        $this->assertTrue(AbTestingFacade::isExperiment('firstExperiment'));
+        $this->assertFalse(AbTestingFacade::isExperiment('secondExperiment'));
 
-        $this->assertEquals('firstExperiment', app(AbTesting::class)->getExperiment()->name);
+        $this->assertEquals('firstExperiment', AbTestingFacade::getExperiment()->name);
     }
 
     public function test_that_two_pageviews_do_not_count_as_two_visitors()
     {
-        app(AbTesting::class)->pageview();
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
+        AbTestingFacade::pageview();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
 
@@ -54,7 +55,7 @@ class PageViewTest extends TestCase
 
     public function test_that_isExperiment_triggers_pageview()
     {
-        app(AbTesting::class)->isExperiment('firstExperiment');
+        AbTestingFacade::isExperiment('firstExperiment');
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
 

@@ -5,12 +5,13 @@ namespace Ben182\AbTesting\Tests;
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\AbTestingFacade;
 
 class StartTest extends TestCase
 {
     public function test_that_start_function_works()
     {
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
 
         $this->assertCount(count($this->experiments), Experiment::all());
         $this->assertCount(count($this->goals) * count($this->experiments), Goal::all());
@@ -37,7 +38,7 @@ class StartTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
     }
 
     public function test_exception_if_duplicate_goal_names()
@@ -51,6 +52,6 @@ class StartTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        app(AbTesting::class)->pageview();
+        AbTestingFacade::pageview();
     }
 }
