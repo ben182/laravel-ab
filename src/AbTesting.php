@@ -2,10 +2,9 @@
 
 namespace Ben182\AbTesting;
 
-use Ben182\AbTesting\Models\Experiment;
-use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Goal;
-
+use Illuminate\Support\Collection;
+use Ben182\AbTesting\Models\Experiment;
 
 class AbTesting
 {
@@ -14,11 +13,13 @@ class AbTesting
     const SESSION_KEY_EXPERIMENTS = 'ab_testing_experiment';
     const SESSION_KEY_GOALS = 'ab_testing_goals';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->experiments = new Collection;
     }
 
-    protected function start() {
+    protected function start()
+    {
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
 
@@ -51,15 +52,16 @@ class AbTesting
         ]);
     }
 
-    public function pageview() {
-
+    public function pageview()
+    {
         if (! session(self::SESSION_KEY_EXPERIMENTS)) {
             $this->start();
             $this->setNextExperiment();
         }
     }
 
-    protected function setNextExperiment() {
+    protected function setNextExperiment()
+    {
         $next = $this->getNextExperiment();
         $next->incrementVisitor();
 
@@ -68,26 +70,29 @@ class AbTesting
         ]);
     }
 
-    protected function getNextExperiment() {
+    protected function getNextExperiment()
+    {
         $sorted = $this->experiments->sortBy('visitors');
+
         return $sorted->first();
     }
 
-    public function isExperiment($name) {
+    public function isExperiment($name)
+    {
         $this->pageview();
 
         return $this->getExperiment()->name === $name;
     }
 
-    public function completeGoal($goal) {
-
-        if (!$this->getExperiment()) {
+    public function completeGoal($goal)
+    {
+        if (! $this->getExperiment()) {
             return false;
         }
 
         $goal = $this->getExperiment()->goals->where('name', $goal)->first();
 
-        if (!$goal) {
+        if (! $goal) {
             return false;
         }
 
@@ -100,17 +105,18 @@ class AbTesting
         return tap($goal)->incrementHit();
     }
 
-    public function getExperiment() {
+    public function getExperiment()
+    {
         return session(self::SESSION_KEY_EXPERIMENTS);
     }
 
-    public function getCompletedGoals() {
-
-        if (!session(self::SESSION_KEY_GOALS)) {
+    public function getCompletedGoals()
+    {
+        if (! session(self::SESSION_KEY_GOALS)) {
             return false;
         }
 
-        return session(self::SESSION_KEY_GOALS)->map(function($goalId) {
+        return session(self::SESSION_KEY_GOALS)->map(function ($goalId) {
             return Goal::find($goalId);
         });
     }

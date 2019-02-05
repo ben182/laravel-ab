@@ -3,11 +3,11 @@
 namespace Ben182\AbTesting\Commands;
 
 use Illuminate\Console\Command;
-use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
+use Ben182\AbTesting\Models\Experiment;
 
-class FlushCommand extends Command {
-
+class FlushCommand extends Command
+{
     /**
      * The name and signature of the console command.
      *
