@@ -38,27 +38,34 @@ class ReportCommand extends Command
      */
     public function handle()
     {
+        $header = $this->prepareHeader();
+        $body = $this->prepareBody();
+
+        $this->table($header, $body);
+    }
+
+    public function prepareHeader() {
         $header = [
             'Experiment',
             'Visitors',
         ];
 
-        $header = array_merge($header, array_map(function ($item) {
+        return array_merge($header, array_map(function ($item) {
             return 'Goal '.$item;
         }, config('ab-testing.goals')));
+    }
 
-        $experiments = Experiment::all()->map(function ($item) {
+    public function prepareBody() {
+        return Experiment::all()->map(function ($item) {
             $return = [$item->name, $item->visitors];
 
             $goalConversations = $item->goals->pluck('hit')->map(function ($hit) use ($item) {
                 $item->visitors = $item->visitors ?: 1; // prevent division by zero exception
 
-                return $hit.' ('.($hit / $item->visitors * 100).'%)';
+                return $hit.' ('.number_format($hit / $item->visitors * 100).'%)';
             });
 
             return array_merge($return, $goalConversations->toArray());
         });
-
-        $this->table($header, $experiments);
     }
 }

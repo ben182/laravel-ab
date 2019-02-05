@@ -3,6 +3,7 @@
 namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTestingServiceProvider;
+use Ben182\AbTesting\AbTestingFacade;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -39,5 +40,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [AbTestingServiceProvider::class];
+    }
+
+    protected function newVisitor() {
+        session()->flush();
+        AbTestingFacade::pageview();
     }
 }
