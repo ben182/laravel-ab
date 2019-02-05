@@ -3,13 +3,13 @@
 namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
-use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
-use Ben182\AbTesting\Commands\FlushCommand;
+use Ben182\AbTesting\Models\Experiment;
 
 class CommandTest extends TestCase
 {
-    public function test_flush_command() {
+    public function test_flush_command()
+    {
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());
 
