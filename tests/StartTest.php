@@ -2,10 +2,9 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\Models\Goal;
-use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\AbTestingFacade;
+use Ben182\AbTesting\Models\Experiment;
 
 class StartTest extends TestCase
 {
