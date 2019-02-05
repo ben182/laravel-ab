@@ -5,6 +5,7 @@ namespace Ben182\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\Exceptions\InvalidConfiguration;
 
 class AbTesting
 {
@@ -24,11 +25,11 @@ class AbTesting
         $configGoals = config('ab-testing.goals');
 
         if (count($configExperiments) !== count(array_unique($configExperiments))) {
-            throw new \Exception('The experiment names should be unique');
+            throw InvalidConfiguration::experiment();
         }
 
         if (count($configGoals) !== count(array_unique($configGoals))) {
-            throw new \Exception('The goal names should be unique');
+            throw InvalidConfiguration::goal();
         }
 
         foreach ($configExperiments as $configExperiment) {

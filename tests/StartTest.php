@@ -5,6 +5,7 @@ namespace Ben182\AbTesting\Tests;
 use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\AbTestingFacade;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\Exceptions\InvalidConfiguration;
 
 class StartTest extends TestCase
 {
@@ -35,7 +36,7 @@ class StartTest extends TestCase
             ],
         ]);
 
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidConfiguration::class);
 
         AbTestingFacade::pageview();
     }
@@ -49,7 +50,7 @@ class StartTest extends TestCase
             ],
         ]);
 
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidConfiguration::class);
 
         AbTestingFacade::pageview();
     }
