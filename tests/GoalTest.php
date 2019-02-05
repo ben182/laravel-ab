@@ -56,6 +56,6 @@ class GoalTest extends TestCase
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
 
-        $this->assertEquals(collect([$goal]), AbTestingFacade::getCompletedGoals());
+        $this->assertEquals($goal->id, AbTestingFacade::getCompletedGoals()->first()->id);
     }
 }
