@@ -19,7 +19,7 @@ class CommandTest extends TestCase
         $this->assertCount(2, Experiment::all());
         $this->assertCount(4, Goal::all());
 
-        $this->artisan('ab:flush');
+        $this->artisan('ab:reset');
 
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());

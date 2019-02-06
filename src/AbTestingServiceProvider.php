@@ -5,8 +5,8 @@ namespace Ben182\AbTesting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Ben182\AbTesting\Commands\FlushCommand;
 use Ben182\AbTesting\Commands\ReportCommand;
+use Ben182\AbTesting\Commands\ResetCommand;
 
 class AbTestingServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,7 @@ class AbTestingServiceProvider extends ServiceProvider
 
             $this->commands([
                 ReportCommand::class,
-                FlushCommand::class,
+                ResetCommand::class,
             ]);
         }
 

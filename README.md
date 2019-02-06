@@ -74,7 +74,7 @@ Alternativly you can use a custom blade if statement:
 
     <h1>Brand name</h1>
 
-@endif
+@endabExperiment
 ```
 
 This will work exactly the same way.
