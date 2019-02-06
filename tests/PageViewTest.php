@@ -4,6 +4,7 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
+use Illuminate\Support\Facades\Blade;
 
 class PageViewTest extends TestCase
 {
@@ -70,5 +71,11 @@ class PageViewTest extends TestCase
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
 
         $this->assertEquals($experiment, request()->abExperiment());
+    }
+
+    public function test_blade_macro() {
+        $this->newVisitor();
+
+        $this->assertTrue(Blade::check('abExperiment', 'firstExperiment'));
     }
 }
