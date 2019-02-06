@@ -73,7 +73,8 @@ class PageViewTest extends TestCase
         $this->assertEquals($experiment, request()->abExperiment());
     }
 
-    public function test_blade_macro() {
+    public function test_blade_macro()
+    {
         $this->newVisitor();
 
         $this->assertTrue(Blade::check('abExperiment', 'firstExperiment'));
