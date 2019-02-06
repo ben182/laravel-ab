@@ -148,6 +148,11 @@ To reset all your visitors and goal completions call the artisan command ab:rese
 php artisan ab:reset
 ```
 
+### Events
+In addition you can hook into two events
+- `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment as a property of the event.
+- `GoalCompleted` gets triggered once a goal is completed. You can grab the goal as a property of the event.
+
 ### Testing
 
 ``` bash
