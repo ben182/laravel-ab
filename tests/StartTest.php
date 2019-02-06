@@ -6,9 +6,6 @@ use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\AbTestingFacade;
 use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
-use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Blade;
 
 class StartTest extends TestCase
 {
