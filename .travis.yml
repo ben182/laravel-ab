@@ -29,7 +29,8 @@ before_install:
     - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update --prefer-dist
     - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
     - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
-    - composer require "mockery/mockery" --no-update --prefer-dist
+
+install: travis_retry composer install --no-interaction --prefer-dist
 
 script:
     - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
