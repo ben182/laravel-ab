@@ -13,7 +13,7 @@ class AbTesting
 {
     protected $experiments;
 
-    const SESSION_KEY_EXPERIMENTS = 'ab_testing_experiment';
+    const SESSION_KEY_EXPERIMENT = 'ab_testing_experiment';
     const SESSION_KEY_GOALS = 'ab_testing_goals';
 
     public function __construct()
@@ -21,6 +21,11 @@ class AbTesting
         $this->experiments = new Collection;
     }
 
+    /**
+     * Validates the config items and puts them into models
+     *
+     * @return void
+     */
     protected function start()
     {
         $configExperiments = config('ab-testing.experiments');
@@ -55,26 +60,43 @@ class AbTesting
         ]);
     }
 
+    /**
+     * Triggers a new visitor. Picks a new experiment and saves it to the session
+     *
+     * @return \Ben182\AbTesting\Models\Experiment|void
+     */
     public function pageview()
     {
-        if (! session(self::SESSION_KEY_EXPERIMENTS)) {
+        if (! session(self::SESSION_KEY_EXPERIMENT)) {
             $this->start();
             $this->setNextExperiment();
 
             event(new ExperimentNewVisitor($this->getExperiment()));
+
+            return $this->getExperiment();
         }
     }
 
+    /**
+     * Calculates a new experiment and sets it to the session
+     *
+     * @return void
+     */
     protected function setNextExperiment()
     {
         $next = $this->getNextExperiment();
         $next->incrementVisitor();
 
         session([
-            self::SESSION_KEY_EXPERIMENTS => $next,
+            self::SESSION_KEY_EXPERIMENT => $next,
         ]);
     }
 
+    /**
+     * Calulcates a new experiment
+     *
+     * @return \Ben182\AbTesting\Models\Experiment|null
+     */
     protected function getNextExperiment()
     {
         $sorted = $this->experiments->sortBy('visitors');
@@ -82,6 +104,13 @@ class AbTesting
         return $sorted->first();
     }
 
+    /**
+     * Checks if the currently active experiment is the given one
+     *
+     * @param string $name The experiments name
+     *
+     * @return boolean
+     */
     public function isExperiment($name)
     {
         $this->pageview();
@@ -89,6 +118,13 @@ class AbTesting
         return $this->getExperiment()->name === $name;
     }
 
+    /**
+     * Completes a goal by incrementing the hit property of the model and setting its ID in the session
+     *
+     * @param string $goal The goals name
+     *
+     * @return \Ben182\AbTesting\Models\Goal|false
+     */
     public function completeGoal($goal)
     {
         if (! $this->getExperiment()) {
@@ -113,11 +149,21 @@ class AbTesting
         return $goal;
     }
 
+    /**
+     * Returns the currently active experiment
+     *
+     * @return \Ben182\AbTesting\Models\Experiment|null
+     */
     public function getExperiment()
     {
-        return session(self::SESSION_KEY_EXPERIMENTS);
+        return session(self::SESSION_KEY_EXPERIMENT);
     }
 
+    /**
+     * Returns all the completed goals
+     *
+     * @return \Illuminate\Support\Collection|false
+     */
     public function getCompletedGoals()
     {
         if (! session(self::SESSION_KEY_GOALS)) {

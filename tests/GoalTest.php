@@ -13,7 +13,7 @@ class GoalTest extends TestCase
     {
         $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
 
         $this->assertEquals($goal, $returnedGoal);
@@ -31,7 +31,7 @@ class GoalTest extends TestCase
     {
         $this->test_that_goal_complete_works();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
 
         $this->assertEquals(1, $goal->hit);
@@ -54,7 +54,7 @@ class GoalTest extends TestCase
     {
         AbTestingFacade::completeGoal('firstGoal');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
         $goal = $experiment->goals->where('name', 'firstGoal');
 
         $this->assertEquals($goal->pluck('id')->toArray(), AbTestingFacade::getCompletedGoals()->pluck('id')->toArray());

@@ -14,7 +14,7 @@ class PageViewTest extends TestCase
     {
         AbTestingFacade::pageview();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[0], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -30,11 +30,11 @@ class PageViewTest extends TestCase
 
         session()->flush();
 
-        $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENTS));
+        $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENT));
 
         AbTestingFacade::pageview();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[1], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -55,7 +55,7 @@ class PageViewTest extends TestCase
         AbTestingFacade::pageview();
         AbTestingFacade::pageview();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals(1, $experiment->visitors);
     }
@@ -64,7 +64,7 @@ class PageViewTest extends TestCase
     {
         AbTestingFacade::isExperiment('firstExperiment');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[0], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -74,7 +74,7 @@ class PageViewTest extends TestCase
     {
         $this->newVisitor();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($experiment, request()->abExperiment());
     }
