@@ -5,9 +5,9 @@ namespace Ben182\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
-use Ben182\AbTesting\Exceptions\InvalidConfiguration;
-use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Ben182\AbTesting\Events\GoalCompleted;
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
+use Ben182\AbTesting\Exceptions\InvalidConfiguration;
 
 class AbTesting
 {
