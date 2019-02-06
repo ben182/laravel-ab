@@ -9,14 +9,10 @@ class GoalTest extends TestCase
 {
     public function test_that_goal_complete_works()
     {
-        AbTestingFacade::pageview();
+        $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
-
-        $this->assertEquals(0, $goal->hit);
-
-        $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
 
         $this->assertEquals($goal, $returnedGoal);
 
@@ -50,7 +46,6 @@ class GoalTest extends TestCase
 
     public function test_that_completed_goals_works()
     {
-        AbTestingFacade::pageview();
         AbTestingFacade::completeGoal('firstGoal');
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENTS);

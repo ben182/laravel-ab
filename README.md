@@ -5,9 +5,13 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ben182/laravel-ab.svg?style=flat-square)](https://scrutinizer-ci.com/g/ben182/laravel-ab)
 [![Code Coverage](https://scrutinizer-ci.com/g/ben182/laravel-ab/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ben182/laravel-ab/?branch=master)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+This package helps you to figure out which content works on your site and which doesn't.
+
+It allows you to create experiments and goals. The visitor will recive randomly the next experiment and you can customize your site to that experiment. The view and the goal conversion will be tracked and you can view the results in a report.
 
 ## Installation
+
+This package can be used in Laravel 5.5 or higher.
 
 You can install the package via composer:
 
@@ -15,11 +19,110 @@ You can install the package via composer:
 composer require ben182/laravel-ab
 ```
 
+## Config
+
+After installation publish the config file:
+
+```bash
+php artisan vendor:publish --provider="Ben182\AbTesting\AbTestingServiceProvider"
+```
+
+You can define your experiments and goals in there.
+
+Finally run the newly added migration
+
+```bash
+php artisan migrate
+```
+
+Two new migrations should be added.
+
 ## Usage
 
-``` php
-$skeleton = new BeyondCode\Skeleton();
-echo $skeleton->echoPhrase('Hello, BeyondCode!');
+### Experiments
+
+```html
+@if (AbTesting::isExperiment('logo-big'))
+
+    <div class="logo-big"></div>
+
+@elseif (AbTesting::isExperiment('logo-grayscale'))
+
+    <div class="logo-greyscale"></div>
+
+@elseif (AbTesting::isExperiment('brand-name'))
+
+    <h1>Brand name</h1>
+
+@endif
+```
+
+Thats the most basic usage of the package. You dont have to initalize or start a new Instance of the Class. The package handles everything for you if you call `isExperiment`
+
+Alternativly you can use a custom blade if statement:
+
+```html
+@abExperiment('logo-big')
+
+    <div class="logo-big"></div>
+
+@elseabExperiment('logo-grayscale')
+
+    <div class="logo-greyscale"></div>
+
+@elseabExperiment('brand-name')
+
+    <h1>Brand name</h1>
+
+@endif
+```
+
+This will work exactly the same way.
+
+If you dont want to make any continual rendering you can call
+
+```php
+AbTesting::pageview()
+```
+
+directly and trigger a new pageview with a random experiment.
+
+Under the hood a new session item will keep track of the current experiment. So a session will only get one experiment and trigger only one pageview.
+
+You can grab the current experiment with
+
+```php
+// get the underlying model
+AbTesting::getExperiment()
+
+// get the experiment name
+AbTesting::getExperiment()->name
+
+// get the visitor count
+AbTesting::getExperiment()->visitors
+```
+
+Alternativly there is a Request helper for you
+```php
+public function index(Request $request) {
+    // the same as 'AbTesting::getExperiment()'
+    $request->abExperiment()
+}
+```
+
+### Goals
+
+To complete a goal simply call the completeGoal function
+
+```php
+AbTesting::completeGoal('signup')
+```
+
+The function will increment the conversion of the goal with this experiment. If there isn't an active experiment running for the session one will be created. You can only trigger a goal conversion once per session. This will be prevented with another session item. The function returns the underlying goal model.
+
+To get all completed goals for the current session
+```php
+AbTesting::getCompletedGoals()
 ```
 
 ### Testing

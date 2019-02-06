@@ -88,7 +88,7 @@ class AbTesting
     public function completeGoal($goal)
     {
         if (! $this->getExperiment()) {
-            return false;
+            $this->pageview();
         }
 
         $goal = $this->getExperiment()->goals->where('name', $goal)->first();

@@ -1,8 +1,5 @@
 <?php
 
-/*
- * You can place your custom package configuration in here.
- */
 return [
     /*
     |--------------------------------------------------------------------------
@@ -20,7 +17,7 @@ return [
     | Goals
     |--------------------------------------------------------------------------
     |
-    | A list of goals. This list can contain urls, route names or custom goals.
+    | A list of goals.
     |
     | Example: ['pricing/order', 'signup']
     |
