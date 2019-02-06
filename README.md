@@ -7,7 +7,7 @@
 
 This package helps you to figure out which content works on your site and which doesn't.
 
-It allows you to create experiments and goals. The visitor will recive randomly the next experiment and you can customize your site to that experiment. The view and the goal conversion will be tracked and you can view the results in a report.
+It allows you to create experiments and goals. The visitor will recive randomly the next experiment and you can customize your site to that experiment. The view and the goal conversion will be tracked, and you can view the results in a report.
 
 ## Installation
 
@@ -57,9 +57,9 @@ Two new migrations should be added.
 @endif
 ```
 
-Thats the most basic usage of the package. You dont have to initalize or start a new Instance of the Class. The package handles everything for you if you call `isExperiment`
+Thats the most basic usage of the package. You don't have to initialize or start a new Instance of the Class. The package handles everything for you if you call `isExperiment`
 
-Alternativly you can use a custom blade if statement:
+Alternatively you can use a custom blade if statement
 
 ```html
 @ab('logo-big')
@@ -79,7 +79,7 @@ Alternativly you can use a custom blade if statement:
 
 This will work exactly the same way.
 
-If you dont want to make any continual rendering you can call
+If you don't want to make any continual rendering you can call
 
 ```php
 AbTesting::pageview()

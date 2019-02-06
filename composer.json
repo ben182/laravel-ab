@@ -1,9 +1,13 @@
 {
     "name": "ben182/laravel-ab",
-    "description": "",
+    "description": "Laravel A/B experiment testing tool",
     "keywords": [
         "ben182",
-        "laravel-ab"
+        "php",
+        "laravel",
+        "laravel-package",
+        "laravel-5-package",
+        "ab-testing"
     ],
     "homepage": "https://github.com/ben182/laravel-ab",
     "license": "MIT License (MIT)",
