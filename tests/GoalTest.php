@@ -4,8 +4,8 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
-use Ben182\AbTesting\Events\GoalCompleted;
 use Illuminate\Support\Facades\Event;
+use Ben182\AbTesting\Events\GoalCompleted;
 
 class GoalTest extends TestCase
 {

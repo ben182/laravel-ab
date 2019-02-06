@@ -3,8 +3,8 @@
 namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTestingFacade;
-use Ben182\AbTesting\AbTestingServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Ben182\AbTesting\AbTestingServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
