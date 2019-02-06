@@ -22,7 +22,7 @@ class AbTesting
     }
 
     /**
-     * Validates the config items and puts them into models
+     * Validates the config items and puts them into models.
      *
      * @return void
      */
@@ -61,7 +61,7 @@ class AbTesting
     }
 
     /**
-     * Triggers a new visitor. Picks a new experiment and saves it to the session
+     * Triggers a new visitor. Picks a new experiment and saves it to the session.
      *
      * @return \Ben182\AbTesting\Models\Experiment|void
      */
@@ -78,7 +78,7 @@ class AbTesting
     }
 
     /**
-     * Calculates a new experiment and sets it to the session
+     * Calculates a new experiment and sets it to the session.
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class AbTesting
     }
 
     /**
-     * Calulcates a new experiment
+     * Calulcates a new experiment.
      *
      * @return \Ben182\AbTesting\Models\Experiment|null
      */
@@ -105,11 +105,11 @@ class AbTesting
     }
 
     /**
-     * Checks if the currently active experiment is the given one
+     * Checks if the currently active experiment is the given one.
      *
      * @param string $name The experiments name
      *
-     * @return boolean
+     * @return bool
      */
     public function isExperiment($name)
     {
@@ -119,7 +119,7 @@ class AbTesting
     }
 
     /**
-     * Completes a goal by incrementing the hit property of the model and setting its ID in the session
+     * Completes a goal by incrementing the hit property of the model and setting its ID in the session.
      *
      * @param string $goal The goals name
      *
@@ -150,7 +150,7 @@ class AbTesting
     }
 
     /**
-     * Returns the currently active experiment
+     * Returns the currently active experiment.
      *
      * @return \Ben182\AbTesting\Models\Experiment|null
      */
@@ -160,7 +160,7 @@ class AbTesting
     }
 
     /**
-     * Returns all the completed goals
+     * Returns all the completed goals.
      *
      * @return \Illuminate\Support\Collection|false
      */
