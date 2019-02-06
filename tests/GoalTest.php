@@ -4,6 +4,8 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
+use Ben182\AbTesting\Events\GoalCompleted;
+use Illuminate\Support\Facades\Event;
 
 class GoalTest extends TestCase
 {
@@ -19,6 +21,10 @@ class GoalTest extends TestCase
         $this->assertEquals(1, $goal->hit);
 
         $this->assertEquals(collect([$goal->id]), session(AbTesting::SESSION_KEY_GOALS));
+
+        Event::assertDispatched(GoalCompleted::class, function ($g) use ($goal) {
+            return $g->goal->id === $goal->id;
+        });
     }
 
     public function test_that_goal_can_only_be_completed_once()

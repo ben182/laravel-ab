@@ -4,6 +4,7 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTestingFacade;
 use Ben182\AbTesting\AbTestingServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -23,6 +24,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->artisan('migrate');
 
         session()->flush();
+
+        Event::fake();
     }
 
     protected function getEnvironmentSetUp($app)

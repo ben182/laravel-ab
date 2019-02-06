@@ -6,6 +6,8 @@ use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
+use Ben182\AbTesting\Events\GoalCompleted;
 
 class AbTesting
 {
@@ -58,6 +60,8 @@ class AbTesting
         if (! session(self::SESSION_KEY_EXPERIMENTS)) {
             $this->start();
             $this->setNextExperiment();
+
+            event(new ExperimentNewVisitor($this->getExperiment()));
         }
     }
 
@@ -103,7 +107,10 @@ class AbTesting
 
         session(self::SESSION_KEY_GOALS)->push($goal->id);
 
-        return tap($goal)->incrementHit();
+        $goal->incrementHit();
+        event(new GoalCompleted($goal));
+
+        return $goal;
     }
 
     public function getExperiment()

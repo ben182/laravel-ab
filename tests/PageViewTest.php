@@ -5,6 +5,8 @@ namespace Ben182\AbTesting\Tests;
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
 use Illuminate\Support\Facades\Blade;
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
+use Illuminate\Support\Facades\Event;
 
 class PageViewTest extends TestCase
 {
@@ -16,6 +18,11 @@ class PageViewTest extends TestCase
 
         $this->assertEquals($this->experiments[0], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
+
+        Event::assertDispatched(ExperimentNewVisitor::class, function ($e) use ($experiment) {
+            return $e->experiment->id === $experiment->id;
+        });
+
     }
 
     public function test_that_pageview_changes_after_first_test()
