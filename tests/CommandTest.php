@@ -27,7 +27,9 @@ class CommandTest extends TestCase
 
     public function test_report_command()
     {
-        $this->artisan('ab:report')->assertExitCode(0);
+        if (version_compare(app()->version(), '5.7.0') >= 0) {
+            $this->artisan('ab:report')->assertExitCode(0);
+        }
 
         $reportCommand = new ReportCommand;
 
