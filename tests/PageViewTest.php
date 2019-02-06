@@ -77,6 +77,6 @@ class PageViewTest extends TestCase
     {
         $this->newVisitor();
 
-        $this->assertTrue(Blade::check('abExperiment', 'firstExperiment'));
+        $this->assertTrue(Blade::check('ab', 'firstExperiment'));
     }
 }

@@ -62,19 +62,19 @@ Thats the most basic usage of the package. You dont have to initalize or start a
 Alternativly you can use a custom blade if statement:
 
 ```html
-@abExperiment('logo-big')
+@ab('logo-big')
 
     <div class="logo-big"></div>
 
-@elseabExperiment('logo-grayscale')
+@elseab('logo-grayscale')
 
     <div class="logo-greyscale"></div>
 
-@elseabExperiment('brand-name')
+@elseab('brand-name')
 
     <h1>Brand name</h1>
 
-@endabExperiment
+@endab
 ```
 
 This will work exactly the same way.

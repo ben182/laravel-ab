@@ -32,7 +32,7 @@ class AbTestingServiceProvider extends ServiceProvider
             return app(AbTesting::class)->getExperiment();
         });
 
-        Blade::if('abExperiment', function ($experiment) {
+        Blade::if('ab', function ($experiment) {
             return app(AbTesting::class)->isExperiment($experiment);
         });
     }
