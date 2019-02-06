@@ -125,6 +125,29 @@ To get all completed goals for the current session
 AbTesting::getCompletedGoals()
 ```
 
+### Report
+
+To get a report of the pageviews, completed goals and conversion call the artisan command ab:report
+```bash
+php artisan ab:report
+```
+
+This prints something like this
+```
++---------------+----------+-------------+
+| Experiment    | Visitors | Goal signup |
++---------------+----------+-------------+
+| big-logo      | 2        | 1 (50%)     |
+| small-buttons | 1        | 0 (0%)      |
++---------------+----------+-------------+
+```
+
+### Reset
+To reset all your visitors and goal completions call the artisan command ab:reset
+```bash
+php artisan ab:reset
+```
+
 ### Testing
 
 ``` bash

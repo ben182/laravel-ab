@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
 
-class FlushCommand extends Command
+class ResetCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ab:flush';
+    protected $signature = 'ab:reset';
 
     /**
      * The console command description.
