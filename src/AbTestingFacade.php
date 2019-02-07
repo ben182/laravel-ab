@@ -5,7 +5,7 @@ namespace Ben182\AbTesting;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Ben182\AbTesting\Skeleton\SkeletonClass
+ * @see \Ben182\AbTesting\AbTesting
  */
 class AbTestingFacade extends Facade
 {

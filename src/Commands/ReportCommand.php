@@ -19,7 +19,7 @@ class ReportCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Shows a table with experiment and goal insights';
 
     /**
      * Create a new command instance.

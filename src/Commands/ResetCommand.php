@@ -20,7 +20,7 @@ class ResetCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Deletes all experiment visitors and goal completions';
 
     /**
      * Create a new command instance.
@@ -41,5 +41,7 @@ class ResetCommand extends Command
     {
         Goal::truncate();
         Experiment::truncate();
+
+        $this->info('Successfully deleted all experiment visitors and goal completions.');
     }
 }
