@@ -30,8 +30,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'wink');
-        $app['config']->set('database.connections.wink', [
+        $app['config']->set('database.default', 'ab');
+        $app['config']->set('database.connections.ab', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
