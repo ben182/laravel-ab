@@ -10,7 +10,7 @@
         "ab-testing"
     ],
     "homepage": "https://github.com/ben182/laravel-ab",
-    "license": "MIT License (MIT)",
+    "license": "MIT",
     "type": "library",
     "authors": [
         {
