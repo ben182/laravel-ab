@@ -5,9 +5,9 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ben182/laravel-ab.svg?style=flat-square)](https://scrutinizer-ci.com/g/ben182/laravel-ab)
 [![Code Coverage](https://scrutinizer-ci.com/g/ben182/laravel-ab/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ben182/laravel-ab/?branch=master)
 
-This package helps you to figure out which content works on your site and which doesn't.
+This package helps you to find out which content works on your site and which doesn't.
 
-It allows you to create experiments and goals. The visitor will recive randomly the next experiment and you can customize your site to that experiment. The view and the goal conversion will be tracked, and you can view the results in a report.
+It allows you to create experiments and goals. The visitor will receive randomly the next experiment and you can customize your site to that experiment. The view and the goal conversion will be tracked and you can view the results in a report.
 
 ## Installation
 
@@ -29,7 +29,7 @@ php artisan vendor:publish --provider="Ben182\AbTesting\AbTestingServiceProvider
 
 You can define your experiments and goals in there.
 
-Finally run the newly added migration
+Finally, run the newly added migration
 
 ```bash
 php artisan migrate
@@ -57,9 +57,9 @@ Two new migrations should be added.
 @endif
 ```
 
-Thats the most basic usage of the package. You don't have to initialize or start a new Instance of the Class. The package handles everything for you if you call `isExperiment`
+That's the most basic usage of the package. You don't have to initialize anything. The package handles everything for you if you call `isExperiment`
 
-Alternatively you can use a custom blade if statement
+Alternatively you can use a custom blade if statement:
 
 ```html
 @ab('logo-big')
@@ -85,11 +85,11 @@ If you don't want to make any continual rendering you can call
 AbTesting::pageview()
 ```
 
-directly and trigger a new pageview with a random experiment.
+directly and trigger a new page view with a random experiment. This function will also be called from `isExperiment`.
 
-Under the hood a new session item will keep track of the current experiment. So a session will only get one experiment and trigger only one pageview.
+Under the hood a new session item will keep track of the current experiment. A session will only get one experiment and only trigger one page view.
 
-You can grab the current experiment with
+You can grab the current experiment with:
 
 ```php
 // get the underlying model
@@ -102,7 +102,8 @@ AbTesting::getExperiment()->name
 AbTesting::getExperiment()->visitors
 ```
 
-Alternativly there is a Request helper for you
+Alternativly there is a request helper for you:
+
 ```php
 public function index(Request $request) {
     // the same as 'AbTesting::getExperiment()'
@@ -112,27 +113,30 @@ public function index(Request $request) {
 
 ### Goals
 
-To complete a goal simply call the completeGoal function
+To complete a goal simply call:
 
 ```php
 AbTesting::completeGoal('signup')
 ```
 
-The function will increment the conversion of the goal with this experiment. If there isn't an active experiment running for the session one will be created. You can only trigger a goal conversion once per session. This will be prevented with another session item. The function returns the underlying goal model.
+The function will increment the conversion of the goal assigned to the active experiment. If there isn't an active experiment running for the session one will be created. You can only trigger a goal conversion once per session. This will be prevented with another session item. The function returns the underlying goal model.
 
-To get all completed goals for the current session
+To get all completed goals for the current session:
+
 ```php
 AbTesting::getCompletedGoals()
 ```
 
 ### Report
 
-To get a report of the pageviews, completed goals and conversion call the artisan command ab:report
+To get a report of the pageviews, completed goals and conversion call the report command:
+
 ```bash
 php artisan ab:report
 ```
 
-This prints something like this
+This prints something like this:
+
 ```
 +---------------+----------+-------------+
 | Experiment    | Visitors | Goal signup |
@@ -143,13 +147,17 @@ This prints something like this
 ```
 
 ### Reset
-To reset all your visitors and goal completions call the artisan command ab:reset
+
+To reset all your visitors and goal completions call the reset command:
+
 ```bash
 php artisan ab:reset
 ```
 
 ### Events
-In addition you can hook into two events
+
+In addition you can hook into two events:
+
 - `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment as a property of the event.
 - `GoalCompleted` gets triggered once a goal is completed. You can grab the goal as a property of the event.
 
