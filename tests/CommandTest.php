@@ -14,7 +14,7 @@ class CommandTest extends TestCase
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());
 
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $this->assertCount(2, Experiment::all());
         $this->assertCount(4, Goal::all());
@@ -42,7 +42,7 @@ class CommandTest extends TestCase
 
         $this->assertEquals([], $reportCommand->prepareBody()->toArray());
 
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $expected = [
             [

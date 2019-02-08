@@ -11,7 +11,7 @@ class StartTest extends TestCase
 {
     public function test_that_start_function_works()
     {
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $this->assertCount(count($this->experiments), Experiment::all());
         $this->assertCount(count($this->goals) * count($this->experiments), Goal::all());
@@ -38,7 +38,7 @@ class StartTest extends TestCase
 
         $this->expectException(InvalidConfiguration::class);
 
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
     }
 
     public function test_exception_if_duplicate_goal_names()
@@ -52,6 +52,6 @@ class StartTest extends TestCase
 
         $this->expectException(InvalidConfiguration::class);
 
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
     }
 }

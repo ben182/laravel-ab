@@ -65,7 +65,7 @@ class AbTesting
      *
      * @return \Ben182\AbTesting\Models\Experiment|void
      */
-    public function pageview()
+    public function pageView()
     {
         if (! session(self::SESSION_KEY_EXPERIMENT)) {
             $this->start();
@@ -93,7 +93,7 @@ class AbTesting
     }
 
     /**
-     * Calulcates a new experiment.
+     * Calculates a new experiment.
      *
      * @return \Ben182\AbTesting\Models\Experiment|null
      */
@@ -111,9 +111,9 @@ class AbTesting
      *
      * @return bool
      */
-    public function isExperiment($name)
+    public function isExperiment(string $name)
     {
-        $this->pageview();
+        $this->pageView();
 
         return $this->getExperiment()->name === $name;
     }
@@ -125,10 +125,10 @@ class AbTesting
      *
      * @return \Ben182\AbTesting\Models\Goal|false
      */
-    public function completeGoal($goal)
+    public function completeGoal(string $goal)
     {
         if (! $this->getExperiment()) {
-            $this->pageview();
+            $this->pageView();
         }
 
         $goal = $this->getExperiment()->goals->where('name', $goal)->first();

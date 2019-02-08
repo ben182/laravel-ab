@@ -82,7 +82,7 @@ This will work exactly the same way.
 If you don't want to make any continual rendering you can call
 
 ```php
-AbTesting::pageview()
+AbTesting::pageView()
 ```
 
 directly and trigger a new page view with a random experiment. This function will also be called from `isExperiment`.
@@ -102,7 +102,7 @@ AbTesting::getExperiment()->name
 AbTesting::getExperiment()->visitors
 ```
 
-Alternativly there is a request helper for you:
+Alternatively there is a request helper for you:
 
 ```php
 public function index(Request $request) {
@@ -129,7 +129,7 @@ AbTesting::getCompletedGoals()
 
 ### Report
 
-To get a report of the pageviews, completed goals and conversion call the report command:
+To get a report of the page views, completed goals and conversion call the report command:
 
 ```bash
 php artisan ab:report

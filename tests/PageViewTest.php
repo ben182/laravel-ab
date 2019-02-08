@@ -12,7 +12,7 @@ class PageViewTest extends TestCase
 {
     public function test_that_pageview_works()
     {
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
@@ -32,7 +32,7 @@ class PageViewTest extends TestCase
 
         $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENT));
 
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
@@ -42,7 +42,7 @@ class PageViewTest extends TestCase
 
     public function test_is_experiment()
     {
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
 
         $this->assertTrue(AbTestingFacade::isExperiment('firstExperiment'));
         $this->assertFalse(AbTestingFacade::isExperiment('secondExperiment'));
@@ -52,8 +52,8 @@ class PageViewTest extends TestCase
 
     public function test_that_two_pageviews_do_not_count_as_two_visitors()
     {
-        AbTestingFacade::pageview();
-        AbTestingFacade::pageview();
+        AbTestingFacade::pageView();
+        AbTestingFacade::pageView();
 
         $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
 
