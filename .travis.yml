@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
   - 7.3
@@ -13,18 +12,16 @@ cache:
     - $HOME/.composer/cache
 
 env:
-    - ILLUMINATE_VERSION=5.5.* PHPUNIT_VERSION=~6.0
     - ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0 COVERAGE=true
+    - ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
+    - ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 matrix:
     fast_finish: true
     exclude:
         # Test Laravel 5.5 and down on PHP 7.0
-        - php: 7.0
-          env: ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
-        - php: 7.0
-          env: ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0 COVERAGE=true
+        - php: 7.1
+          env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 before_install:
     - travis_retry composer self-update

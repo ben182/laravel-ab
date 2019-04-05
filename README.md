@@ -11,7 +11,7 @@ It allows you to create experiments and goals. The visitor will receive randomly
 
 ## Installation
 
-This package can be used in Laravel 5.5 or higher.
+This package can be used in Laravel 5.6 or higher.
 
 You can install the package via composer:
 
