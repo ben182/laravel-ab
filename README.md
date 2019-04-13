@@ -1,9 +1,11 @@
-# Laravel A/B Testing
+<h6 align="center">
+    <img src="https://i.ibb.co/hy7fjMG/Laravel-AB.png" width="300"/>
+</h6>
 
-[![Latest Version](https://img.shields.io/github/release/ben182/laravel-ab.svg?style=flat-square)](https://github.com/ben182/laravel-ab/releases)
-[![Build Status](https://img.shields.io/travis/ben182/laravel-ab/master.svg?style=flat-square)](https://travis-ci.org/ben182/laravel-ab)
-[![Quality Score](https://img.shields.io/scrutinizer/g/ben182/laravel-ab.svg?style=flat-square)](https://scrutinizer-ci.com/g/ben182/laravel-ab)
-[![Code Coverage](https://scrutinizer-ci.com/g/ben182/laravel-ab/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ben182/laravel-ab/?branch=master)
+<p align="center"><a href="https://github.com/ben182/laravel-ab/releases"><img src="https://camo.githubusercontent.com/c3ce61db6a98f1a6d141a4fc3b3f83c182674ba8/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f72656c656173652f62656e3138322f6c61726176656c2d61622e7376673f7374796c653d666c61742d737175617265" alt="Latest Version" data-canonical-src="https://img.shields.io/github/release/ben182/laravel-ab.svg?style=flat-square" style="max-width:100%;"></a>
+<a href="https://travis-ci.org/ben182/laravel-ab" rel="nofollow"><img src="https://camo.githubusercontent.com/7994c56ad88fb3e839360835571cc670d88af2e2/68747470733a2f2f696d672e736869656c64732e696f2f7472617669732f62656e3138322f6c61726176656c2d61622f6d61737465722e7376673f7374796c653d666c61742d737175617265" alt="Build Status" data-canonical-src="https://img.shields.io/travis/ben182/laravel-ab/master.svg?style=flat-square" style="max-width:100%;"></a>
+<a href="https://scrutinizer-ci.com/g/ben182/laravel-ab" rel="nofollow"><img src="https://camo.githubusercontent.com/88e5e8e14c12f93518fa07a025a15893ae8772e4/68747470733a2f2f696d672e736869656c64732e696f2f7363727574696e697a65722f672f62656e3138322f6c61726176656c2d61622e7376673f7374796c653d666c61742d737175617265" alt="Quality Score" data-canonical-src="https://img.shields.io/scrutinizer/g/ben182/laravel-ab.svg?style=flat-square" style="max-width:100%;"></a>
+<a href="https://scrutinizer-ci.com/g/ben182/laravel-ab/?branch=master" rel="nofollow"><img src="https://camo.githubusercontent.com/de896bb05aa6d6224d2c1e7be81c36b18895128d/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f62656e3138322f6c61726176656c2d61622f6261646765732f636f7665726167652e706e673f623d6d6173746572" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/ben182/laravel-ab/badges/coverage.png?b=master" style="max-width:100%;"></a></p>
 
 This package helps you to find out which content works on your site and which doesn't.
 
