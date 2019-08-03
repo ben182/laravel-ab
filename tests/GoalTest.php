@@ -6,6 +6,7 @@ use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
 use Illuminate\Support\Facades\Event;
 use Ben182\AbTesting\Events\GoalCompleted;
+use Ben182\AbTesting\Models\SessionVisitor;
 
 class GoalTest extends TestCase
 {
@@ -13,7 +14,28 @@ class GoalTest extends TestCase
     {
         $returnedGoal = AbTestingFacade::completeGoal('firstGoal');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = AbTestingFacade::getExperiment();
+        $goal = $experiment->goals->where('name', 'firstGoal')->first();
+
+        $this->assertEquals($goal, $returnedGoal);
+
+        $this->assertEquals(1, $goal->hit);
+
+        $this->assertEquals(collect([$goal->id]), session(AbTesting::SESSION_KEY_GOALS));
+
+        Event::assertDispatched(GoalCompleted::class, function ($g) use ($goal) {
+            return $g->goal->id === $goal->id;
+        });
+    }
+
+    public function test_that_visitor_id_goal_complete_works()
+    {
+        AbTestingFacade::pageView(123);
+        AbTestingFacade::resetVisitor();
+
+        $returnedGoal = AbTestingFacade::completeGoal('firstGoal', 123);
+
+        $experiment = AbTestingFacade::getExperiment(123);
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
 
         $this->assertEquals($goal, $returnedGoal);
@@ -31,7 +53,7 @@ class GoalTest extends TestCase
     {
         $this->test_that_goal_complete_works();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = AbTestingFacade::getExperiment();
         $goal = $experiment->goals->where('name', 'firstGoal')->first();
 
         $this->assertEquals(1, $goal->hit);
@@ -54,7 +76,7 @@ class GoalTest extends TestCase
     {
         AbTestingFacade::completeGoal('firstGoal');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = AbTestingFacade::getExperiment();
         $goal = $experiment->goals->where('name', 'firstGoal');
 
         $this->assertEquals($goal->pluck('id')->toArray(), AbTestingFacade::getCompletedGoals()->pluck('id')->toArray());

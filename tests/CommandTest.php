@@ -2,27 +2,33 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\AbTestingFacade;
+use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\Models\DatabaseVisitor;
 use Ben182\AbTesting\Commands\ReportCommand;
 
 class CommandTest extends TestCase
 {
     public function test_flush_command()
     {
+        DatabaseVisitor::truncate();
+
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());
+        $this->assertCount(0, DatabaseVisitor::all());
 
-        AbTestingFacade::pageView();
+        AbTestingFacade::pageView(123);
 
         $this->assertCount(2, Experiment::all());
         $this->assertCount(4, Goal::all());
+        $this->assertCount(1, DatabaseVisitor::all());
 
         $this->artisan('ab:reset');
 
         $this->assertCount(0, Experiment::all());
         $this->assertCount(0, Goal::all());
+        $this->assertCount(0, DatabaseVisitor::all());
     }
 
     public function test_report_command()
