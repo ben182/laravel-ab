@@ -7,7 +7,6 @@ use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\DatabaseVisitor;
 
-
 class ResetCommand extends Command
 {
     /**

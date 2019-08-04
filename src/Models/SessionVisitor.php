@@ -10,7 +10,7 @@ class SessionVisitor implements VisitorInterface
 
     public function hasExperiment()
     {
-        return (bool)session(self::SESSION_KEY_EXPERIMENT);
+        return (bool) session(self::SESSION_KEY_EXPERIMENT);
     }
 
     public function getExperiment()
