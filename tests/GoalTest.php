@@ -6,7 +6,6 @@ use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
 use Illuminate\Support\Facades\Event;
 use Ben182\AbTesting\Events\GoalCompleted;
-use Ben182\AbTesting\Models\SessionVisitor;
 
 class GoalTest extends TestCase
 {

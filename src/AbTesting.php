@@ -2,15 +2,15 @@
 
 namespace Ben182\AbTesting;
 
-use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Goal;
+use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
-use Ben182\AbTesting\Models\DatabaseVisitor;
-use Ben182\AbTesting\Models\SessionVisitor;
 use Ben182\AbTesting\Events\GoalCompleted;
+use Ben182\AbTesting\Models\SessionVisitor;
+use Ben182\AbTesting\Models\DatabaseVisitor;
+use Ben182\AbTesting\Contracts\VisitorInterface;
 use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
-use Ben182\AbTesting\Contracts\VisitorInterface;
 
 class AbTesting
 {
@@ -63,7 +63,7 @@ class AbTesting
         ]);
     }
 
-   /**
+    /**
      * Resets the visitor data.
      *
      * @return void
@@ -77,7 +77,7 @@ class AbTesting
     /**
      * Triggers a new visitor. Picks a new experiment and saves it to the Visitor.
      *
-     * @param integer $visitor_id An optional visitor identifier
+     * @param int $visitor_id An optional visitor identifier
      *
      * @return \Ben182\AbTesting\Models\Experiment|void
      */
@@ -113,7 +113,7 @@ class AbTesting
     /**
      * Calculates a new experiment.
      *
-     * @return \Ben182\AbTesting\Models\Experiment|null
+     * @return \Ben182\AbTesting\Models\Experiment
      */
     protected function getNextExperiment()
     {
@@ -140,7 +140,7 @@ class AbTesting
      * Completes a goal by incrementing the hit property of the model and setting its ID in the session.
      *
      * @param string $goal The goals name
-     * @param integer $visitor_id An optional visitor identifier
+     * @param int $visitor_id An optional visitor identifier
      *
      * @return \Ben182\AbTesting\Models\Goal|false
      */
@@ -169,7 +169,7 @@ class AbTesting
     /**
      * Returns the currently active experiment.
      *
-     * @param integer $visitor_id An optional visitor identifier
+     * @param int $visitor_id An optional visitor identifier
      *
      * @return \Ben182\AbTesting\Models\Experiment|null
      */
@@ -180,8 +180,6 @@ class AbTesting
 
     /**
      * Returns all the completed goals.
-     *
-     * @param integer $visitor_id An optional visitor identifier
      *
      * @return \Illuminate\Support\Collection|false
      */
@@ -199,17 +197,17 @@ class AbTesting
     /**
      * Returns a visitor instance.
      *
-     * @param integer $visitor_id An optional visitor identifier
+     * @param int $visitor_id An optional visitor identifier
      *
      * @return \Ben182\AbTesting\Models\SessionVisitor|\Ben182\AbTesting\Models\DatabaseVisitor
      */
     public function getVisitor($visitor_id = null)
     {
-        if ( !is_null($this->visitor) ) {
+        if (! is_null($this->visitor)) {
             return $this->visitor;
         }
 
-        if ($visitor_id) {
+        if (! empty($visitor_id)) {
             return $this->visitor = DatabaseVisitor::firstOrNew(['visitor_id' => $visitor_id]);
         } else {
             return $this->visitor = new SessionVisitor();

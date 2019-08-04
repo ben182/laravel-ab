@@ -2,9 +2,8 @@
 
 namespace Ben182\AbTesting\Models;
 
-use Ben182\AbTesting\Contracts\VisitorInterface;
-use Ben182\AbTesting\Models\Experiment;
 use Illuminate\Database\Eloquent\Model;
+use Ben182\AbTesting\Contracts\VisitorInterface;
 
 class DatabaseVisitor extends Model implements VisitorInterface
 {
@@ -20,11 +19,13 @@ class DatabaseVisitor extends Model implements VisitorInterface
         return $this->belongsTo(Experiment::class);
     }
 
-    public function hasExperiment() {
-        return !is_null($this->experiment_id) && $this->experiment_id;
+    public function hasExperiment()
+    {
+        return ! is_null($this->experiment_id) && $this->experiment_id;
     }
 
-    public function getExperiment() {
+    public function getExperiment()
+    {
         return $this->experiment;
     }
 
