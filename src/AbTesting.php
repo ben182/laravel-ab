@@ -31,6 +31,10 @@ class AbTesting
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
 
+        if (!count($configExperiments)) {
+            throw InvalidConfiguration::noExperiment();
+        }
+
         if (count($configExperiments) !== count(array_unique($configExperiments))) {
             throw InvalidConfiguration::experiment();
         }

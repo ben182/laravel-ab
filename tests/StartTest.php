@@ -54,4 +54,15 @@ class StartTest extends TestCase
 
         AbTestingFacade::pageView();
     }
+
+    public function test_exception_if_no_experiments_set()
+    {
+        config([
+            'ab-testing.experiments' => [],
+        ]);
+
+        $this->expectException(InvalidConfiguration::class);
+
+        AbTestingFacade::pageView();
+    }
 }
