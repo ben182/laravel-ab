@@ -175,7 +175,7 @@ php artisan ab:reset
 
 In addition you can hook into two events:
 
-- `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment and visitor instance as propeerties of the event.
+- `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment and visitor instance as properties of the event.
 - `GoalCompleted` gets triggered once a goal is completed. You can grab the goal as a property of the event.
 
 ### Testing
