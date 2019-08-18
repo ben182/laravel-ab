@@ -89,7 +89,7 @@ class AbTesting
             $this->start();
         }
 
-        if ( $visitor->hasExperiment() ) {
+        if ($visitor->hasExperiment()) {
             return $visitor->getExperiment();
         }
 
