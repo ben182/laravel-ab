@@ -85,14 +85,19 @@ class AbTesting
     {
         $visitor = $this->getVisitor($visitor_id);
 
-        if (! session(self::SESSION_KEY_GOALS)) {
+        if (! session(self::SESSION_KEY_GOALS) || $this->experiments->isEmpty()) {
             $this->start();
-            $this->setNextExperiment($visitor);
-
-            event(new ExperimentNewVisitor($this->getExperiment(), $visitor));
-
-            return $this->getExperiment();
         }
+
+        if ( $visitor->hasExperiment() ) {
+            return $visitor->getExperiment();
+        }
+
+        $this->setNextExperiment($visitor);
+
+        event(new ExperimentNewVisitor($this->getExperiment(), $visitor));
+
+        return $this->getExperiment();
     }
 
     /**
