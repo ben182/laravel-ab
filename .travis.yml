@@ -12,23 +12,23 @@ cache:
     - $HOME/.composer/cache
 
 env:
-    - ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0
-    - ILLUMINATE_VERSION=6.* PHPUNIT_VERSION=~8.0 COVERAGE=true
+    - ILLUMINATE_VERSION=5.6.* TESTBENCH=3.6.* PHPUNIT_VERSION=~7.0
+    - ILLUMINATE_VERSION=5.7.* TESTBENCH=3.7.* PHPUNIT_VERSION=~7.0
+    - ILLUMINATE_VERSION=5.8.* TESTBENCH=3.8.* PHPUNIT_VERSION=~8.0
+    - ILLUMINATE_VERSION=6.* TESTBENCH=4.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 matrix:
     fast_finish: true
     exclude:
         - php: 7.1
-          env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0
+          env: ILLUMINATE_VERSION=5.8.* TESTBENCH=3.8.* PHPUNIT_VERSION=~8.0
         - php: 7.1
-          env: ILLUMINATE_VERSION=6.* PHPUNIT_VERSION=~8.0 COVERAGE=true
+          env: ILLUMINATE_VERSION=6.* TESTBENCH=4.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 before_install:
     - travis_retry composer self-update
     - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update --prefer-dist
-    - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
+    - composer require "orchestra/testbench:${TESTBENCH}" --no-update --prefer-dist
     - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
 
 install: travis_retry composer install --no-interaction --prefer-dist
