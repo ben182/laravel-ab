@@ -14,14 +14,16 @@ cache:
 env:
     - ILLUMINATE_VERSION=5.6.* PHPUNIT_VERSION=~7.0
     - ILLUMINATE_VERSION=5.7.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0 COVERAGE=true
+    - ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0
+    - ILLUMINATE_VERSION=6.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 matrix:
     fast_finish: true
     exclude:
-        # Test Laravel 5.5 and down on PHP 7.0
         - php: 7.1
-          env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0 COVERAGE=true
+          env: ILLUMINATE_VERSION=5.8.* PHPUNIT_VERSION=~8.0
+        - php: 7.1
+          env: ILLUMINATE_VERSION=6.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 before_install:
     - travis_retry composer self-update
