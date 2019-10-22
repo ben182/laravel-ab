@@ -76,14 +76,16 @@ class AbTesting
             return;
         }
 
-        if (! session(self::SESSION_KEY_EXPERIMENT)) {
-            $this->start();
-            $this->setNextExperiment();
-
-            event(new ExperimentNewVisitor($this->getExperiment()));
-
-            return $this->getExperiment();
+        if (session(self::SESSION_KEY_EXPERIMENT)) {
+            return;
         }
+
+        $this->start();
+        $this->setNextExperiment();
+
+        event(new ExperimentNewVisitor($this->getExperiment()));
+
+        return $this->getExperiment();
     }
 
     /**
