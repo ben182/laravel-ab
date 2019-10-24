@@ -129,6 +129,10 @@ To get all completed goals for the current session:
 AbTesting::getCompletedGoals()
 ```
 
+### Bots and crawlers
+
+The package can try to ignore bots and crawlers from registering pageviews. Just enable the `ignore_crawlers` option in the config.
+
 ### Report
 
 To get a report of the page views, completed goals and conversion call the report command:
