@@ -2,7 +2,9 @@
 
 namespace Ben182\AbTesting\Models;
 
+use Ben182\AbTesting\AbTestingFacade;
 use Illuminate\Database\Eloquent\Model;
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
 
 class Experiment extends Model
 {
@@ -22,8 +24,13 @@ class Experiment extends Model
         return $this->hasMany(Goal::class);
     }
 
-    public function incrementVisitor()
+    public function visit()
     {
+        if (AbTestingFacade::isCrawler()) {
+            return;
+        }
+
         $this->increment('visitors');
+        event(new ExperimentNewVisitor($this));
     }
 }

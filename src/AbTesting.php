@@ -5,9 +5,7 @@ namespace Ben182\AbTesting;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
-use Ben182\AbTesting\Events\GoalCompleted;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
 
 class AbTesting
@@ -72,18 +70,12 @@ class AbTesting
      */
     public function pageView()
     {
-        if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
-            return;
-        }
-
         if (session(self::SESSION_KEY_EXPERIMENT)) {
             return;
         }
 
         $this->start();
         $this->setNextExperiment();
-
-        event(new ExperimentNewVisitor($this->getExperiment()));
 
         return $this->getExperiment();
     }
@@ -96,7 +88,7 @@ class AbTesting
     protected function setNextExperiment()
     {
         $next = $this->getNextExperiment();
-        $next->incrementVisitor();
+        $next->visit();
 
         session([
             self::SESSION_KEY_EXPERIMENT => $next,
@@ -154,8 +146,7 @@ class AbTesting
 
         session(self::SESSION_KEY_GOALS)->push($goal->id);
 
-        $goal->incrementHit();
-        event(new GoalCompleted($goal));
+        $goal->complete();
 
         return $goal;
     }
