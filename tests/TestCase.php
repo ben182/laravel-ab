@@ -50,4 +50,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
         session()->flush();
         AbTestingFacade::pageView();
     }
+
+    protected function actingAsCrawler()
+    {
+        $_SERVER['HTTP_USER_AGENT'] = 'crawl';
+        config()->set('ab-testing.ignore_crawlers', true);
+    }
 }
