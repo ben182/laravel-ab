@@ -180,7 +180,7 @@ class AbTesting
     /**
      * Check if the current request is from a crawler or bot and config option is enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function isCrawler()
     {
