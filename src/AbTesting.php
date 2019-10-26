@@ -185,4 +185,15 @@ class AbTesting
             return Goal::find($goalId);
         });
     }
+
+    /**
+     * Check if the current request is from a crawler or bot and config option is enabled.
+     *
+     * @return boolean
+     */
+    public function isCrawler()
+    {
+        return config('ab-testing.ignore_crawlers')
+            && (new CrawlerDetect)->isCrawler();
+    }
 }
