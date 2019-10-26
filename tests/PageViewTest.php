@@ -40,14 +40,15 @@ class PageViewTest extends TestCase
         $this->assertEquals(1, $experiment->visitors);
     }
 
-    public function test_that_pageview_does_not_trigger_for_crawlers()
+    public function test_that_crawlers_does_not_trigger_pageviews()
     {
-        $_SERVER['HTTP_USER_AGENT'] = 'crawl';
-        config()->set('ab-testing.ignore_crawlers', true);
+        $this->actingAsCrawler();
 
         AbTestingFacade::pageView();
 
-        $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENT));
+        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+
+        $this->assertEquals(0, $experiment->visitors);
 
         Event::assertNotDispatched(ExperimentNewVisitor::class);
     }

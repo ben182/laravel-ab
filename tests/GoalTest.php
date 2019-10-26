@@ -45,6 +45,17 @@ class GoalTest extends TestCase
         $this->assertEquals(collect([$goal->id]), session(AbTesting::SESSION_KEY_GOALS));
     }
 
+    public function test_that_crawlers_does_not_complete_goals()
+    {
+        $this->actingAsCrawler();
+
+        $goal = AbTestingFacade::completeGoal('firstGoal');
+
+        $this->assertEquals(0, $goal->hit);
+
+        Event::assertNotDispatched(GoalCompleted::class);
+    }
+
     public function test_that_invalid_goal_name_returns_false()
     {
         $this->assertFalse(AbTestingFacade::completeGoal('1234'));
