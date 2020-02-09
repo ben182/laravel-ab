@@ -124,6 +124,10 @@ class AbTesting
      */
     public function isExperiment(string $name)
     {
+        if ((new CrawlerDetect)->isCrawler()) {
+            return false;
+        }
+        
         $this->pageView();
 
         return $this->getExperiment()->name === $name;
