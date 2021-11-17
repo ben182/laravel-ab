@@ -2,8 +2,8 @@
 
 namespace Ben182\AbTesting\Commands;
 
-use Illuminate\Console\Command;
 use Ben182\AbTesting\Models\Experiment;
+use Illuminate\Console\Command;
 
 class ReportCommand extends Command
 {

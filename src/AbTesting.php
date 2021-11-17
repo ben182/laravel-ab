@@ -2,13 +2,13 @@
 
 namespace Ben182\AbTesting;
 
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
+use Ben182\AbTesting\Events\GoalCompleted;
+use Ben182\AbTesting\Exceptions\InvalidConfiguration;
+use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
-use Ben182\AbTesting\Models\Experiment;
-use Ben182\AbTesting\Events\GoalCompleted;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Ben182\AbTesting\Events\ExperimentNewVisitor;
-use Ben182\AbTesting\Exceptions\InvalidConfiguration;
 
 class AbTesting
 {
@@ -118,8 +118,7 @@ class AbTesting
     /**
      * Checks if the currently active experiment is the given one.
      *
-     * @param string $name The experiments name
-     *
+     * @param  string  $name  The experiments name
      * @return bool
      */
     public function isExperiment(string $name)
@@ -132,8 +131,7 @@ class AbTesting
     /**
      * Completes a goal by incrementing the hit property of the model and setting its ID in the session.
      *
-     * @param string $goal The goals name
-     *
+     * @param  string  $goal  The goals name
      * @return \Ben182\AbTesting\Models\Goal|false
      */
     public function completeGoal(string $goal)

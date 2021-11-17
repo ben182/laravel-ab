@@ -2,9 +2,9 @@
 
 namespace Ben182\AbTesting\Commands;
 
-use Illuminate\Console\Command;
-use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\Models\Goal;
+use Illuminate\Console\Command;
 
 class ResetCommand extends Command
 {

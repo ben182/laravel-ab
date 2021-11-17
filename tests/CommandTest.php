@@ -2,10 +2,10 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\Models\Goal;
 use Ben182\AbTesting\AbTestingFacade;
-use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Commands\ReportCommand;
+use Ben182\AbTesting\Models\Experiment;
+use Ben182\AbTesting\Models\Goal;
 
 class CommandTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace Ben182\AbTesting;
 
+use Ben182\AbTesting\Commands\ReportCommand;
+use Ben182\AbTesting\Commands\ResetCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Ben182\AbTesting\Commands\ResetCommand;
-use Ben182\AbTesting\Commands\ReportCommand;
 
 class AbTestingServiceProvider extends ServiceProvider
 {
