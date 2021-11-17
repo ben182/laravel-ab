@@ -45,7 +45,7 @@ class AbTesting
         }
 
         foreach ($configExperiments as $configExperiment) {
-            $this->experiments[] = $experiment = Experiment::firstOrCreate([
+            $this->experiments[] = $experiment = Experiment::with('goals')->firstOrCreate([
                 'name' => $configExperiment,
             ], [
                 'visitors' => 0,
