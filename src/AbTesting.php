@@ -125,7 +125,7 @@ class AbTesting
     {
         $this->pageView();
 
-        if (!$experiment = $this->getExperiment()) {
+        if (! $experiment = $this->getExperiment()) {
             return false;
         }
 
