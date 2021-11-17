@@ -4,6 +4,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - 8.0
 
 sudo: false
 
@@ -12,18 +13,13 @@ cache:
     - $HOME/.composer/cache
 
 env:
-    - ILLUMINATE_VERSION=5.6.* TESTBENCH=3.6.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.7.* TESTBENCH=3.7.* PHPUNIT_VERSION=~7.0
-    - ILLUMINATE_VERSION=5.8.* TESTBENCH=3.8.* PHPUNIT_VERSION=~8.0
+    - ILLUMINATE_VERSION=5.8.* TESTBENCH=3.8.* PHPUNIT_VERSION=~8.0 COVERAGE=true
     - ILLUMINATE_VERSION=6.* TESTBENCH=4.* PHPUNIT_VERSION=~8.0 COVERAGE=true
+    - ILLUMINATE_VERSION=7.* TESTBENCH=5.* PHPUNIT_VERSION=~9.0 COVERAGE=true
+    - ILLUMINATE_VERSION=8.* TESTBENCH=6.* PHPUNIT_VERSION=~9.0 COVERAGE=true
 
 matrix:
     fast_finish: true
-    exclude:
-        - php: 7.1
-          env: ILLUMINATE_VERSION=5.8.* TESTBENCH=3.8.* PHPUNIT_VERSION=~8.0
-        - php: 7.1
-          env: ILLUMINATE_VERSION=6.* TESTBENCH=4.* PHPUNIT_VERSION=~8.0 COVERAGE=true
 
 before_install:
     - travis_retry composer self-update
