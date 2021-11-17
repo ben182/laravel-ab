@@ -59,4 +59,14 @@ class GoalTest extends TestCase
 
         $this->assertEquals($goal->pluck('id')->toArray(), AbTestingFacade::getCompletedGoals()->pluck('id')->toArray());
     }
+
+    public function test_that_completeGoal_works_with_crawlers()
+    {
+        config([
+            'ab-testing.ignore_crawlers' => true,
+        ]);
+        $_SERVER['HTTP_USER_AGENT'] = 'Googlebot';
+
+        $this->assertFalse(AbTestingFacade::completeGoal('firstGoal'));
+    }
 }

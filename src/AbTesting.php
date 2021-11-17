@@ -125,7 +125,11 @@ class AbTesting
     {
         $this->pageView();
 
-        return $this->getExperiment()->name === $name;
+        if (!$experiment = $this->getExperiment()) {
+            return false;
+        }
+
+        return $experiment->name === $name;
     }
 
     /**
@@ -136,8 +140,10 @@ class AbTesting
      */
     public function completeGoal(string $goal)
     {
+        $this->pageView();
+
         if (! $this->getExperiment()) {
-            $this->pageView();
+            return false;
         }
 
         $goal = $this->getExperiment()->goals->where('name', $goal)->first();
