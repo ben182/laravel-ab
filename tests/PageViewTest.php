@@ -7,7 +7,6 @@ use Ben182\AbTesting\AbTestingFacade;
 use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class PageViewTest extends TestCase
 {
