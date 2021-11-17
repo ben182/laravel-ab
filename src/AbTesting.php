@@ -6,6 +6,7 @@ use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Events\GoalCompleted;
+use Illuminate\Support\Facades\Cache;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
@@ -68,20 +69,22 @@ class AbTesting
     /**
      * Triggers a new visitor. Picks a new experiment and saves it to the session.
      *
+     * @param string $cacheKey the cache key of the experiment
+     *
      * @return \Ben182\AbTesting\Models\Experiment|void
      */
-    public function pageView()
+    public function pageView(String $cacheKey)
     {
         if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
             return;
         }
 
         if (session(self::SESSION_KEY_EXPERIMENT)) {
-            return;
+            return session(self::SESSION_KEY_EXPERIMENT);
         }
 
         $this->start();
-        $this->setNextExperiment();
+        $this->setNextExperiment($cacheKey);
 
         event(new ExperimentNewVisitor($this->getExperiment()));
 
@@ -91,12 +94,17 @@ class AbTesting
     /**
      * Calculates a new experiment and sets it to the session.
      *
+     * @param string $cacheKey the cache key of the experiment
+     *
      * @return void
      */
-    protected function setNextExperiment()
+    protected function setNextExperiment(String $cacheKey)
     {
-        $next = $this->getNextExperiment();
-        $next->incrementVisitor();
+        $next = Cache::rememberForever($cacheKey, function () {
+            $next = $this->getNextExperiment();
+            $next->incrementVisitor();
+            return $next;
+        });
 
         session([
             self::SESSION_KEY_EXPERIMENT => $next,
@@ -119,12 +127,13 @@ class AbTesting
      * Checks if the currently active experiment is the given one.
      *
      * @param string $name The experiments name
+     * @param string $cacheKey the cache key of the experiment
      *
      * @return bool
      */
-    public function isExperiment(string $name)
+    public function isExperiment(string $name, String $cacheKey)
     {
-        $this->pageView();
+        $this->pageView($cacheKey);
 
         return $this->getExperiment()->name === $name;
     }
@@ -133,13 +142,14 @@ class AbTesting
      * Completes a goal by incrementing the hit property of the model and setting its ID in the session.
      *
      * @param string $goal The goals name
+     * @param string $cacheKey the cache key of the experiment
      *
      * @return \Ben182\AbTesting\Models\Goal|false
      */
-    public function completeGoal(string $goal)
+    public function completeGoal(string $goal, string $cacheKey)
     {
         if (! $this->getExperiment()) {
-            $this->pageView();
+            $this->pageView($cacheKey);
         }
 
         $goal = $this->getExperiment()->goals->where('name', $goal)->first();
