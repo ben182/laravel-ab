@@ -13,9 +13,22 @@ It allows you to create experiments and goals. The visitor will receive randomly
 
 ## Installation
 
-This package can be used in Laravel 5.6 or higher.
+This package can be used in Laravel 7.0 or higher.
 
 You can install the package via composer:
+
+Update composer.json and add this repository
+
+```json
+"repositories": [
+    {
+    "url": "https://github.com/Ptech21/laravel-ab.git",
+    "type": "git"
+    }
+]
+```
+
+Then run the follwing command
 
 ```bash
 composer require ben182/laravel-ab
