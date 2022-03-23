@@ -42,7 +42,7 @@ class AbTesting
         }
         
         if (count($configPercentages) !== count($configExperiments)) {
-            throw InvalidConfiguration::experiment();
+            throw InvalidConfiguration::percentage();
         }
 
         if (count($configGoals) !== count(array_unique($configGoals))) {
