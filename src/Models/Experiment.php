@@ -11,6 +11,7 @@ class Experiment extends Model
     protected $fillable = [
         'name',
         'visitors',
+        'percentage',
     ];
 
     protected $casts = [
