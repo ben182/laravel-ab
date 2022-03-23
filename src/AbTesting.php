@@ -32,6 +32,7 @@ class AbTesting
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
         $configPercentages = config('ab-testing.percentages');
+        $totalPercentage = array_sum($configPercentages);
 
         if (! count($configExperiments)) {
             throw InvalidConfiguration::noExperiment();
@@ -41,6 +42,10 @@ class AbTesting
             throw InvalidConfiguration::experiment();
         }
         
+        if ($totalPercentage !== 100) {
+            throw InvalidConfiguration::totalPercentage();
+        }
+        
         if (count($configPercentages) !== count($configExperiments)) {
             throw InvalidConfiguration::percentage();
         }
@@ -48,6 +53,7 @@ class AbTesting
         if (count($configGoals) !== count(array_unique($configGoals))) {
             throw InvalidConfiguration::goal();
         }
+        
 
         foreach ($configExperiments as $configExperiment) {
             $this->experiments[] = $experiment = Experiment::with('goals')->firstOrCreate([
