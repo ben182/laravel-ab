@@ -25,4 +25,9 @@ class InvalidConfiguration extends Exception
     {
         return new static('There is no percentage for every experiment');
     }
+    
+    public static function totalPercentage(): self
+    {
+        return new static('Total percentage should be equal to 100');
+    }
 }
