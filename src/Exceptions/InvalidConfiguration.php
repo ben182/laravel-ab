@@ -20,4 +20,9 @@ class InvalidConfiguration extends Exception
     {
         return new static('The goal names should be unique.');
     }
+    
+    public static function percentage(): self
+    {
+        return new static('There is no percentage for every experiment');
+    }
 }
