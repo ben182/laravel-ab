@@ -31,12 +31,17 @@ class AbTesting
     {
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
+        $configPercentages = config('ab-testing.percentages');
 
         if (! count($configExperiments)) {
             throw InvalidConfiguration::noExperiment();
         }
 
         if (count($configExperiments) !== count(array_unique($configExperiments))) {
+            throw InvalidConfiguration::experiment();
+        }
+        
+        if (count($configPercentages) !== count($configExperiments)) {
             throw InvalidConfiguration::experiment();
         }
 
