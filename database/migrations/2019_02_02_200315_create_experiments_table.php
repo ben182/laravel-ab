@@ -17,6 +17,7 @@ class CreateExperimentsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->integer('visitors');
+            $table->double('percentage');
             $table->timestamps();
         });
     }
