@@ -130,7 +130,7 @@ class AbTesting
         
         if($visitorsSum != 0)
         {
-            $nextExperiment = $experiments->find(function($experiment){
+            $nextExperiment = $experiments->filter(function($experiment) use ($visitorsSum) {
                return (($experiment->visitors / $visitorsSum) * 100) < $experiment->percentage;
             });
         }
