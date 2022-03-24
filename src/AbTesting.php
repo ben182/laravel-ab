@@ -134,7 +134,7 @@ class AbTesting
                return (($experiment->visitors / $visitorsSum) * 100) < $experiment->percentage;
             });
         }
-        return !$nextExperiment->isEmpty() ? $nextExperiment : $experiments->first();
+        return !$nextExperiment->isEmpty() ? $nextExperiment->first() : $experiments->first();
     }
 
     /**
