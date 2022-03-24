@@ -110,9 +110,19 @@ class AbTesting
      */
     protected function getNextExperiment()
     {
-        $sorted = $this->experiments->sortBy('visitors');
-
-        return $sorted->first();
+        $experiments = $this->experiments->sortByDesc('percentage');
+        
+        $visitorsSum = $experiments->sum('visitors');
+        
+        $nextExperiment = collect([]);
+        
+        if($visitorsSum != 0)
+        {
+            $nextExperiment = $experiments->filter(function($experiment){
+               return (($experiment->visitors / $visitorsSum) * 100) < $experiment->percentage;
+            });
+        }
+        return !$nextExperiment->isEmpty() ? $nextExperiment->first() : $experiments->first();
     }
 
     /**
