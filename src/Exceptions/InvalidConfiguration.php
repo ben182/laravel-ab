@@ -31,7 +31,7 @@ class InvalidConfiguration extends Exception
         return new static('Total percentage should be equal to 100');
     }
     
-    public static function numericPercentage(): self
+    public static function numericPercentages(): self
     {
         return new static('Percentages should be numeric');
     }
