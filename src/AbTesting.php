@@ -55,7 +55,7 @@ class AbTesting
         if (count($configGoals) !== count(array_unique($configGoals))) {
             throw InvalidConfiguration::goal();
         }
-        
+        dd(count($configInterval));
         if(count($configInterval) == 1 || 
             (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1]))) ||
              (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1])))) {
