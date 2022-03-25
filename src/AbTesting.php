@@ -34,6 +34,15 @@ class AbTesting
         $configGoals = config('ab-testing.goals');
         $configPercentages = config('ab-testing.percentages');
         $configInterval = config('ab-testing.interval');
+        
+        $ConfigPercentagesNumeric = array_filter($configPercentages, function($percentage) {
+            return is_numeric($percentage);
+        });
+        
+        if (count($isConfigPercentagesNumeric) !== count($configPercentages)) {
+            throw InvalidConfiguration::numericPercentages();
+        }
+        
         $totalPercentage = array_sum($configPercentages);
 
         if (! count($configExperiments)) {
