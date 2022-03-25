@@ -33,6 +33,7 @@ class AbTesting
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
         $configPercentages = config('ab-testing.percentages');
+        $configInterval = config('ab-testing.interval');
         $totalPercentage = array_sum($configPercentages);
 
         if (! count($configExperiments)) {
@@ -53,6 +54,12 @@ class AbTesting
 
         if (count($configGoals) !== count(array_unique($configGoals))) {
             throw InvalidConfiguration::goal();
+        }
+        
+        if(count($configInterval) == 1 || 
+            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $interval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $interval[1]))) ||
+             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $interval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $interval[1])))) {
+            
         }
         
 
