@@ -9,6 +9,7 @@ use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Carbon\Carbon;
 
 class AbTesting
 {
@@ -84,11 +85,17 @@ class AbTesting
      */
     public function pageView()
     {
+        $interval = config('ab-testing.interval');
+        
         if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
             return;
         }
 
         if (session(self::SESSION_KEY_EXPERIMENT)) {
+            return;
+        }
+        
+        if (!empty($interval) && !$this->inInterval($interval)) {
             return;
         }
 
@@ -98,6 +105,19 @@ class AbTesting
         event(new ExperimentNewVisitor($this->getExperiment()));
 
         return $this->getExperiment();
+    }
+    
+    /**
+     * Check if the current date is in the interval
+     *
+     * @return bool
+     */
+    protected function inInterval($interval)
+    {
+        $currentDate = Carbon::now();
+        $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $interval[0]);
+        $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $interval[1]);
+        return $currentDate->between($startDate,$endDate);
     }
 
     /**
