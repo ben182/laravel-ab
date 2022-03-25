@@ -55,13 +55,6 @@ class AbTesting
         if (count($configGoals) !== count(array_unique($configGoals))) {
             throw InvalidConfiguration::goal();
         }
-        var_dump(count($configInterval));
-        exit;
-        if(count($configInterval) == 1 || 
-            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1]))) ||
-             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1])))) {
-            throw InvalidConfiguration::interval();
-        }
         
 
         foreach ($configExperiments as $index => $configExperiment) {
@@ -93,7 +86,13 @@ class AbTesting
      */
     public function pageView()
     {
-        $interval = config('ab-testing.interval');
+        $configInterval = config('ab-testing.interval');
+        
+        if(count($configInterval) == 1 || 
+            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1]))) ||
+             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1])))) {
+            throw InvalidConfiguration::interval();
+        }
         
         if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
             return;
@@ -103,7 +102,7 @@ class AbTesting
             return;
         }
         
-        if (!empty($interval) && !$this->inInterval($interval)) {
+        if (!empty($configInterval) && !$this->inInterval($configInterval)) {
             return;
         }
 
