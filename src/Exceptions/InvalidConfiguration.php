@@ -31,6 +31,11 @@ class InvalidConfiguration extends Exception
         return new static('Total percentage should be equal to 100');
     }
     
+    public static function numericPercentage(): self
+    {
+        return new static('Percentages should be numeric');
+    }
+    
     public static function interval(): self
     {
         return new static('The elements of interval array must be dates of format Y-m-d H:i:s and the first element less than the second');
