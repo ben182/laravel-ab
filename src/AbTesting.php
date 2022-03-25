@@ -57,8 +57,8 @@ class AbTesting
         }
         
         if(count($configInterval) == 1 || 
-            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', configInterval[1]))) ||
-             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', configInterval[1])))) {
+            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1]))) ||
+             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1])))) {
             throw InvalidConfiguration::interval();
         }
         
