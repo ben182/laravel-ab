@@ -9,6 +9,7 @@ use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
 use Illuminate\Support\Collection;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Carbon\Carbon;
 
 class AbTesting
 {
@@ -31,6 +32,18 @@ class AbTesting
     {
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
+        $configPercentages = config('ab-testing.percentages');
+        $configInterval = config('ab-testing.interval');
+        
+        $configPercentagesNumeric = array_filter($configPercentages, function($percentage) {
+            return is_numeric($percentage);
+        });
+        
+        if (count($configPercentagesNumeric) !== count($configPercentages)) {
+            throw InvalidConfiguration::numericPercentages();
+        }
+        
+        $totalPercentage = array_sum($configPercentages);
 
         if (! count($configExperiments)) {
             throw InvalidConfiguration::noExperiment();
@@ -39,15 +52,25 @@ class AbTesting
         if (count($configExperiments) !== count(array_unique($configExperiments))) {
             throw InvalidConfiguration::experiment();
         }
+        
+        if ($totalPercentage !== 100) {
+            throw InvalidConfiguration::totalPercentage();
+        }
+        
+        if (count($configPercentages) !== count($configExperiments)) {
+            throw InvalidConfiguration::percentage();
+        }
 
         if (count($configGoals) !== count(array_unique($configGoals))) {
             throw InvalidConfiguration::goal();
         }
+        
 
-        foreach ($configExperiments as $configExperiment) {
+        foreach ($configExperiments as $index => $configExperiment) {
             $this->experiments[] = $experiment = Experiment::with('goals')->firstOrCreate([
                 'name' => $configExperiment,
             ], [
+                'percentage' => $configPercentages[$index],
                 'visitors' => 0,
             ]);
 
@@ -72,11 +95,23 @@ class AbTesting
      */
     public function pageView()
     {
+        $configInterval = config('ab-testing.interval');
+        
+        if(count($configInterval) == 1 || 
+            (count($configInterval) == 2 && (!Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0]) || !Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1]))) ||
+             (count($configInterval) == 2 && Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[0])->gt(Carbon::createFromFormat('Y-m-d H:i:s', $configInterval[1])))) {
+            throw InvalidConfiguration::interval();
+        }
+        
         if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
             return;
         }
 
         if (session(self::SESSION_KEY_EXPERIMENT)) {
+            return;
+        }
+        
+        if (!empty($configInterval) && !$this->inInterval($configInterval)) {
             return;
         }
 
@@ -86,6 +121,19 @@ class AbTesting
         event(new ExperimentNewVisitor($this->getExperiment()));
 
         return $this->getExperiment();
+    }
+    
+    /**
+     * Check if the current date is in the interval
+     *
+     * @return bool
+     */
+    protected function inInterval($interval)
+    {
+        $currentDate = Carbon::now();
+        $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $interval[0]);
+        $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $interval[1]);
+        return $currentDate->between($startDate,$endDate);
     }
 
     /**
@@ -110,9 +158,19 @@ class AbTesting
      */
     protected function getNextExperiment()
     {
-        $sorted = $this->experiments->sortBy('visitors');
-
-        return $sorted->first();
+        $experiments = $this->experiments->sortByDesc('percentage');
+        
+        $visitorsSum = $experiments->sum('visitors');
+        
+        $nextExperiment = collect([]);
+        
+        if($visitorsSum != 0)
+        {
+            $nextExperiment = $experiments->filter(function($experiment) use ($visitorsSum) {
+               return (($experiment->visitors / $visitorsSum) * 100) < $experiment->percentage;
+            });
+        }
+        return !$nextExperiment->isEmpty() ? $nextExperiment->first() : $experiments->first();
     }
 
     /**
