@@ -47,7 +47,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function newVisitor()
     {
-        session()->flush();
+        AbTestingFacade::resetVisitor();
         AbTestingFacade::pageView();
     }
 }

@@ -129,9 +129,26 @@ To get all completed goals for the current session:
 AbTesting::getCompletedGoals()
 ```
 
+<<<<<<< HEAD
 ### Bots and crawlers
 
 The package can try to ignore bots and crawlers from registering pageviews. Just enable the `ignore_crawlers` option in the config.
+=======
+### Persisting visitor data
+When used in the above way the visitor data is stored in session data attached to the user. In some cases you might want to trigger a goal completion in an asynchronous way and the users session won't be available. To avoid getting bad data by registering the goal completion under a new experiment you can persist the visitor data in the database.
+
+To do this you pass a user identifier to the pageview function.
+
+```php
+AbTesting::pageview($identifier)
+```
+
+In your asynchronous request you can then provide the same idenfier to the completeGoals function.
+
+```php
+AbTesting::completeGoal('payment-completed', $identifier)
+```
+>>>>>>> 5cd154a966e5e3b7191a89f2026ff3d2dd354575
 
 ### Report
 
@@ -164,7 +181,7 @@ php artisan ab:reset
 
 In addition you can hook into two events:
 
-- `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment as a property of the event.
+- `ExperimentNewVisitor` gets triggered once an experiment gets assigned to a new visitor. You can grab the experiment and visitor instance as properties of the event.
 - `GoalCompleted` gets triggered once a goal is completed. You can grab the goal as a property of the event.
 
 ### Testing
