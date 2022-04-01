@@ -2,37 +2,37 @@
 
 namespace Ben182\AbTesting;
 
+use Ben182\AbTesting\Contracts\VisitorInterface;
 use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Ben182\AbTesting\Events\GoalCompleted;
 use Ben182\AbTesting\Exceptions\InvalidConfiguration;
+use Ben182\AbTesting\Models\DatabaseVisitor;
 use Ben182\AbTesting\Models\Experiment;
 use Ben182\AbTesting\Models\Goal;
+use Ben182\AbTesting\Models\SessionVisitor;
 use Illuminate\Support\Collection;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class AbTesting
 {
     protected $experiments;
+    protected $visitor;
 
-    const SESSION_KEY_EXPERIMENT = 'ab_testing_experiment';
-    const SESSION_KEY_GOALS = 'ab_testing_goals';
+    public const SESSION_KEY_GOALS = 'ab_testing_goals';
 
     public function __construct()
     {
-        $this->experiments = new Collection;
+        $this->experiments = new Collection();
     }
 
     /**
      * Validates the config items and puts them into models.
-     *
-     * @return void
      */
     protected function start()
     {
         $configExperiments = config('ab-testing.experiments');
         $configGoals = config('ab-testing.goals');
 
-        if (! count($configExperiments)) {
+        if (!count($configExperiments)) {
             throw InvalidConfiguration::noExperiment();
         }
 
@@ -61,52 +61,62 @@ class AbTesting
         }
 
         session([
-            self::SESSION_KEY_GOALS => new Collection,
+            self::SESSION_KEY_GOALS => new Collection(),
         ]);
     }
 
     /**
-     * Triggers a new visitor. Picks a new experiment and saves it to the session.
+     * Resets the visitor data.
+     */
+    public function resetVisitor()
+    {
+        session()->flush();
+        $this->visitor = null;
+    }
+
+    /**
+     * Triggers a new visitor. Picks a new experiment and saves it to the Visitor.
+     *
+     * @param int $visitor_id An optional visitor identifier
      *
      * @return \Ben182\AbTesting\Models\Experiment|void
      */
-    public function pageView()
+    public function pageView($visitor_id = null)
     {
-        if (config('ab-testing.ignore_crawlers') && (new CrawlerDetect)->isCrawler()) {
-            return;
+        $visitor = $this->getVisitor($visitor_id);
+
+        if (!session(self::SESSION_KEY_GOALS) || $this->experiments->isEmpty()) {
+            $this->start();
         }
 
-        if (session(self::SESSION_KEY_EXPERIMENT)) {
-            return;
+        if ($visitor->hasExperiment()) {
+            return $visitor->getExperiment();
         }
 
-        $this->start();
-        $this->setNextExperiment();
+        $this->setNextExperiment($visitor);
 
-        event(new ExperimentNewVisitor($this->getExperiment()));
+        event(new ExperimentNewVisitor($this->getExperiment(), $visitor));
 
         return $this->getExperiment();
     }
 
     /**
-     * Calculates a new experiment and sets it to the session.
+     * Calculates a new experiment and sets it to the Visitor.
      *
-     * @return void
+     * @param VisitorInterface $visitor An object implementing VisitorInterface
      */
-    protected function setNextExperiment()
+    protected function setNextExperiment(VisitorInterface $visitor)
     {
         $next = $this->getNextExperiment();
         $next->incrementVisitor();
 
-        session([
-            self::SESSION_KEY_EXPERIMENT => $next,
-        ]);
+        $visitor->setExperiment($next);
     }
 
     /**
      * Calculates a new experiment.
      *
-     * @return \Ben182\AbTesting\Models\Experiment|null
+     * @return \Ben182\AbTesting\Models\Experiment
      */
     protected function getNextExperiment()
     {
@@ -118,14 +128,15 @@ class AbTesting
     /**
      * Checks if the currently active experiment is the given one.
      *
-     * @param  string  $name  The experiments name
+     * @param string $name The experiments name
+     *
      * @return bool
      */
     public function isExperiment(string $name)
     {
         $this->pageView();
 
-        if (! $experiment = $this->getExperiment()) {
+        if (!$experiment = $this->getExperiment()) {
             return false;
         }
 
@@ -135,20 +146,18 @@ class AbTesting
     /**
      * Completes a goal by incrementing the hit property of the model and setting its ID in the session.
      *
-     * @param  string  $goal  The goals name
+     * @param string $goal       The goals name
+     * @param int    $visitor_id An optional visitor identifier
+     *
      * @return \Ben182\AbTesting\Models\Goal|false
      */
-    public function completeGoal(string $goal)
+    public function completeGoal(string $goal, $visitor_id = null)
     {
-        $this->pageView();
+        $this->pageView($visitor_id);
 
-        if (! $this->getExperiment()) {
-            return false;
-        }
+        $goal = $this->getExperiment($visitor_id)->goals->where('name', $goal)->first();
 
-        $goal = $this->getExperiment()->goals->where('name', $goal)->first();
-
-        if (! $goal) {
+        if (!$goal) {
             return false;
         }
 
@@ -167,26 +176,48 @@ class AbTesting
     /**
      * Returns the currently active experiment.
      *
-     * @return \Ben182\AbTesting\Models\Experiment|null
+     * @param int $visitor_id An optional visitor identifier
+     *
+     * @return null|\Ben182\AbTesting\Models\Experiment
      */
-    public function getExperiment()
+    public function getExperiment($visitor_id = null)
     {
-        return session(self::SESSION_KEY_EXPERIMENT);
+        return $this->getVisitor($visitor_id)->getExperiment();
     }
 
     /**
      * Returns all the completed goals.
      *
-     * @return \Illuminate\Support\Collection|false
+     * @return false|\Illuminate\Support\Collection
      */
     public function getCompletedGoals()
     {
-        if (! session(self::SESSION_KEY_GOALS)) {
+        if (!session(self::SESSION_KEY_GOALS)) {
             return false;
         }
 
         return session(self::SESSION_KEY_GOALS)->map(function ($goalId) {
             return Goal::find($goalId);
         });
+    }
+
+    /**
+     * Returns a visitor instance.
+     *
+     * @param int $visitor_id An optional visitor identifier
+     *
+     * @return \Ben182\AbTesting\Models\DatabaseVisitor|\Ben182\AbTesting\Models\SessionVisitor
+     */
+    public function getVisitor($visitor_id = null)
+    {
+        if (!is_null($this->visitor)) {
+            return $this->visitor;
+        }
+
+        if (!empty($visitor_id)) {
+            return $this->visitor = DatabaseVisitor::firstOrNew(['visitor_id' => $visitor_id]);
+        }
+
+        return $this->visitor = new SessionVisitor();
     }
 }

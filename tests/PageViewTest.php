@@ -2,9 +2,9 @@
 
 namespace Ben182\AbTesting\Tests;
 
-use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
 use Ben182\AbTesting\Events\ExperimentNewVisitor;
+use Ben182\AbTesting\Models\SessionVisitor;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 
@@ -14,7 +14,7 @@ class PageViewTest extends TestCase
     {
         AbTestingFacade::pageView();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = session(SessionVisitor::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[0], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -30,11 +30,11 @@ class PageViewTest extends TestCase
 
         session()->flush();
 
-        $this->assertNull(session(AbTesting::SESSION_KEY_EXPERIMENT));
+        $this->assertNull(session(SessionVisitor::SESSION_KEY_EXPERIMENT));
 
         AbTestingFacade::pageView();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = session(SessionVisitor::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[1], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -67,7 +67,7 @@ class PageViewTest extends TestCase
         AbTestingFacade::pageView();
         AbTestingFacade::pageView();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = session(SessionVisitor::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals(1, $experiment->visitors);
     }
@@ -76,7 +76,7 @@ class PageViewTest extends TestCase
     {
         AbTestingFacade::isExperiment('firstExperiment');
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = session(SessionVisitor::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($this->experiments[0], $experiment->name);
         $this->assertEquals(1, $experiment->visitors);
@@ -86,7 +86,7 @@ class PageViewTest extends TestCase
     {
         $this->newVisitor();
 
-        $experiment = session(AbTesting::SESSION_KEY_EXPERIMENT);
+        $experiment = session(SessionVisitor::SESSION_KEY_EXPERIMENT);
 
         $this->assertEquals($experiment, request()->abExperiment());
     }
